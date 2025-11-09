@@ -10,7 +10,7 @@ export default function Navbar() {
   const { data: session, status } = useSession()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
-  const isAdmin = session?.user?.role === "ADMIN"
+  const isAdmin = session?.user?.role === "admin"
   const isLoading = status === "loading"
 
   return (

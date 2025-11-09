@@ -18,7 +18,7 @@ export async function PATCH(
       where: { email: session.user.email },
     })
 
-    if (adminUser?.role !== "ADMIN") {
+    if (adminUser?.role !== "admin") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
@@ -30,12 +30,12 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid user ID" }, { status: 400 })
     }
 
-    if (!role || !["ADMIN", "MEMBER"].includes(role)) {
+    if (!role || !["admin", "member"].includes(role)) {
       return NextResponse.json({ error: "Invalid role" }, { status: 400 })
     }
 
     // Prevent admin from demoting themselves
-    if (userId === adminUser.id && role !== "ADMIN") {
+    if (userId === adminUser.id && role !== "admin") {
       return NextResponse.json(
         { error: "Cannot change your own role" },
         { status: 400 }
@@ -70,7 +70,7 @@ export async function DELETE(
       where: { email: session.user.email },
     })
 
-    if (adminUser?.role !== "ADMIN") {
+    if (adminUser?.role !== "admin") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 

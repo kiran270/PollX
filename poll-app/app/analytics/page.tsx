@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
       return
     }
 
-    if (session.user?.role !== "ADMIN") {
+    if (session.user?.role !== "admin") {
       router.push("/")
       return
     }
@@ -109,7 +109,7 @@ export default function AnalyticsPage() {
               overview: {
                 ...analytics.overview,
                 adminCount:
-                  newRole === "ADMIN"
+                  newRole === "admin"
                     ? analytics.overview.adminCount + 1
                     : analytics.overview.adminCount - 1,
                 memberCount:
@@ -167,7 +167,7 @@ export default function AnalyticsPage() {
     )
   }
 
-  if (!session || session.user?.role !== "ADMIN" || !analytics) {
+  if (!session || session.user?.role !== "admin" || !analytics) {
     return null
   }
 
@@ -343,16 +343,16 @@ export default function AnalyticsPage() {
                               handleRoleChange(user.id, e.target.value)
                             }
                             className={`px-3 py-1 rounded-lg text-xs font-medium border bg-slate-800 cursor-pointer ${
-                              user.role === "ADMIN"
+                              user.role === "admin"
                                 ? "text-purple-400 border-purple-500/20"
                                 : "text-blue-400 border-blue-500/20"
                             }`}
                           >
-                            <option value="MEMBER" className="bg-slate-800 text-white">
-                              MEMBER
+                            <option value="member" className="bg-slate-800 text-white">
+                              member
                             </option>
-                            <option value="ADMIN" className="bg-slate-800 text-white">
-                              ADMIN
+                            <option value="admin" className="bg-slate-800 text-white">
+                              admin
                             </option>
                           </select>
                         </td>
