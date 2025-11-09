@@ -1,0 +1,91 @@
+╔══════════════════════════════════════════════════════════════════╗
+║          GOOGLE OAUTH SETUP FOR pollx.duckdns.org                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📋 STEP-BY-STEP INSTRUCTIONS:
+
+1️⃣  GO TO GOOGLE CLOUD CONSOLE
+   → https://console.cloud.google.com/
+   → Select your project
+   → APIs & Services → Credentials
+
+2️⃣  CLICK ON YOUR OAUTH 2.0 CLIENT ID
+   → Look for Client ID: 310418779553-pgesbbt7pcvtm8mm8a6hsg50turhtlmh
+   → Click to edit
+
+3️⃣  ADD AUTHORIZED REDIRECT URIs
+   Click "+ ADD URI" and add each of these:
+
+   ✓ http://localhost:3000/api/auth/callback/google
+   ✓ http://localhost/api/auth/callback/google
+   ✓ http://pollx.duckdns.org/api/auth/callback/google
+   ✓ https://pollx.duckdns.org/api/auth/callback/google
+
+   ⚠️  NO trailing slashes!
+
+4️⃣  ADD AUTHORIZED JAVASCRIPT ORIGINS
+   Click "+ ADD URI" and add each of these:
+
+   ✓ http://localhost:3000
+   ✓ http://localhost
+   ✓ http://pollx.duckdns.org
+   ✓ https://pollx.duckdns.org
+
+5️⃣  CLICK SAVE
+   → Wait 5-10 minutes for changes to propagate
+
+6️⃣  RESTART YOUR APP (on EC2)
+   → docker-compose restart poll-app
+
+7️⃣  CLEAR BROWSER CACHE
+   → Or use Incognito/Private mode
+
+8️⃣  TEST SIGN IN
+   → Go to: http://pollx.duckdns.org
+   → Click "Sign in with Google"
+   → Should work now! ✅
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    CURRENT CONFIGURATION                         ║
+╚══════════════════════════════════════════════════════════════════╝
+
+Your .env.local:
+  NEXTAUTH_URL="http://pollx.duckdns.org"
+  GOOGLE_CLIENT_ID="310418779553-pgesbbt7pcvtm8mm8a6hsg50turhtlmh.apps.googleusercontent.com"
+
+Required Redirect URI:
+  http://pollx.duckdns.org/api/auth/callback/google
+
+╔══════════════════════════════════════════════════════════════════╗
+║                      TROUBLESHOOTING                             ║
+╚══════════════════════════════════════════════════════════════════╝
+
+❌ Still getting error?
+
+1. Check the error message for the EXACT redirect_uri
+2. Copy that EXACT URL
+3. Add it to Google Cloud Console
+4. Make sure NO trailing slash
+5. Make sure HTTP/HTTPS matches
+6. Wait 5-10 minutes
+7. Clear browser cache
+8. Try again
+
+Common mistakes:
+  ❌ http://pollx.duckdns.org:3000/api/auth/callback/google (has port)
+  ❌ http://pollx.duckdns.org/api/auth/callback/google/ (trailing slash)
+  ❌ https://pollx.duckdns.org/api/auth/callback/google (wrong protocol)
+  ✅ http://pollx.duckdns.org/api/auth/callback/google (CORRECT!)
+
+╔══════════════════════════════════════════════════════════════════╗
+║                         QUICK FIX                                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+If you see the error, look at the URL in the error message.
+It will show something like:
+
+  "redirect_uri=http://pollx.duckdns.org/api/auth/callback/google"
+
+Copy that EXACT URL and add it to Google Cloud Console.
+
+That's it! 🎉
