@@ -3,18 +3,57 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useState } from "react"
 
 export default function Navbar() {
   const pathname = usePathname()
   const { data: session, status } = useSession()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
   const isAdmin = session?.user?.role === "ADMIN"
   const isLoading = status === "loading"
 
   return (
-    <div className="fixed left-0 top-0 h-screen w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-50">
-      {/* Logo */}
-      <div className="p-6 border-b border-slate-800">
+    <>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 z-50">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+            <span className="text-xl">📊</span>
+          </div>
+          <h1 className="text-xl font-bold text-white">PollX</h1>
+        </Link>
+        
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 text-slate-400 hover:text-white transition-colors"
+        >
+          {isMobileMenuOpen ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Desktop & Mobile */}
+      <div className={`fixed top-0 h-screen w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-50 transition-transform duration-300 ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      } lg:left-0`}>
+      {/* Logo - Desktop Only */}
+      <div className="hidden lg:block p-6 border-b border-slate-800">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
             <span className="text-2xl">📊</span>
@@ -27,7 +66,7 @@ export default function Navbar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 mt-16 lg:mt-0" onClick={() => setIsMobileMenuOpen(false)}>
         <Link
           href="/"
           className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
@@ -144,5 +183,6 @@ export default function Navbar() {
         )}
       </div>
     </div>
+    </>
   )
 }

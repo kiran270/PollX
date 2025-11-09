@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     expose:
       - "3000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=file:/app/prisma/dev.db
       - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
