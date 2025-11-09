@@ -14,9 +14,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           response_type: "code"
         }
       },
-      httpOptions: {
-        timeout: 10000,
-      }
     }),
   ],
   trustHost: true,

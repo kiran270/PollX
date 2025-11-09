@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname()
   const { data: session, status } = useSession()
   
-  const isAdmin = session?.user?.role === "admin"
+  const isAdmin = session?.user?.role === "ADMIN"
   const isLoading = status === "loading"
 
   return (
@@ -97,7 +97,9 @@ export default function Navbar() {
                 <p className="text-sm font-semibold text-white truncate">
                   {session.user?.name || "User"}
                 </p>
-                <p className="text-xs text-slate-400">{isAdmin ? "Admin" : "Member"}</p>
+                <p className="text-xs text-slate-400">
+                  {session.user?.role || "MEMBER"}
+                </p>
               </div>
             </div>
             <button
