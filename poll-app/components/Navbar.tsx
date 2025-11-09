@@ -57,19 +57,35 @@ export default function Navbar() {
         </Link>
 
         {session && isAdmin && (
-          <Link
-            href="/create-poll"
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
-              pathname === "/create-poll"
-                ? "bg-blue-600 text-white"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
-            }`}
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
-            Create Poll
-          </Link>
+          <>
+            <Link
+              href="/create-poll"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                pathname === "/create-poll"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              Create Poll
+            </Link>
+            
+            <Link
+              href="/analytics"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                pathname === "/analytics"
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+              </svg>
+              Analytics
+            </Link>
+          </>
         )}
       </nav>
 
