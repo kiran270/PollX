@@ -1,0 +1,44 @@
+# Local testing setup - Access at http://localhost (no port number)
+version: '3.8'
+
+services:
+  poll-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: poll-app
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      - DATABASE_URL=file:/app/prisma/dev.db
+      - NEXTAUTH_URL=http://localhost
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - NODE_ENV=production
+    volumes:
+      - poll-data:/app/prisma
+    networks:
+      - poll-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: poll-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-localhost.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - poll-app
+    networks:
+      - poll-network
+
+volumes:
+  poll-data:
+    driver: local
+
+networks:
+  poll-network:
+    driver: bridge
