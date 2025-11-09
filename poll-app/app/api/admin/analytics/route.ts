@@ -14,7 +14,7 @@ export async function GET() {
       where: { email: session.user.email },
     })
 
-    if (user?.role !== "ADMIN") {
+    if (user?.role !== "admin") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
@@ -35,7 +35,7 @@ export async function GET() {
 
     // Get user role distribution
     const adminCount = await prisma.user.count({
-      where: { role: "ADMIN" },
+      where: { role: "admin" },
     })
     const memberCount = await prisma.user.count({
       where: { role: "MEMBER" },

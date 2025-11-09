@@ -121,7 +121,7 @@ export default function PollCard({ poll }: { poll: Poll }) {
   }
 
   const leadingOptionId = getLeadingOption()
-  const isAdmin = session?.user?.role === "ADMIN"
+  const isAdmin = session?.user?.role === "admin"
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this poll? This action cannot be undone.")) {

@@ -17,7 +17,7 @@ async function main() {
 
   const user = await prisma.user.update({
     where: { email },
-    data: { role: 'ADMIN' }
+    data: { role: 'admin' }
   })
 
   console.log(`✅ ${user.email} is now an ADMIN`)

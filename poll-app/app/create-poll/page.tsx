@@ -94,7 +94,7 @@ export default function Page() {
     )
   }
 
-  if (session.user?.role !== "ADMIN") {
+  if (session.user?.role !== "admin") {
     return (
       <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
         <div className="text-center max-w-md bg-slate-900 rounded-xl p-12 border border-slate-800">

@@ -27,7 +27,7 @@ export default function EditPollPage() {
       return
     }
 
-    if (session.user?.role !== "ADMIN") {
+    if (session.user?.role !== "admin") {
       router.push("/")
       return
     }
@@ -142,7 +142,7 @@ export default function EditPollPage() {
     )
   }
 
-  if (!session || session.user?.role !== "ADMIN") {
+  if (!session || session.user?.role !== "admin") {
     return null
   }
 
