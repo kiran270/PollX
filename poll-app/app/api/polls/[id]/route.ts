@@ -59,7 +59,7 @@ export async function DELETE(
       where: { email: session.user.email },
     })
 
-    if (user?.role !== "ADMIN") {
+    if (user?.role !== "admin") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
@@ -128,7 +128,7 @@ export async function PATCH(
       where: { email: session.user.email },
     })
 
-    if (user?.role !== "ADMIN") {
+    if (user?.role !== "admin") {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
