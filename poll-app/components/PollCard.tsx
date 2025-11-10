@@ -89,7 +89,8 @@ export default function PollCard({ poll }: { poll: Poll }) {
 
       if (response.ok) {
         setHasVoted(true)
-        setTimeout(() => window.location.reload(), 1000)
+        // Don't reload the page - just update the state
+        // The UI will show "Vote submitted" message
       } else {
         const data = await response.json()
         if (response.status === 401) {
