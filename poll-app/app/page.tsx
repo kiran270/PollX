@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import PollCard from "@/components/PollCard"
 
 export default function Page() {
   const { data: session, status } = useSession()
-  const router = useRouter()
   const [polls, setPolls] = useState([])
   const [loading, setLoading] = useState(true)
 

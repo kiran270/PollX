@@ -122,7 +122,7 @@ export default function Page() {
           <p className="text-slate-400">Design your poll and start collecting votes</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-slate-900 rounded-xl p-8 border border-slate-800 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-slate-900 rounded-xl p-4 sm:p-6 lg:p-8 border border-slate-800 space-y-6">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Poll Question
@@ -215,7 +215,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="pt-4 flex gap-3">
+          <div className="pt-4 flex flex-col sm:flex-row gap-3">
             <button
               type="button"
               onClick={() => router.push("/")}
