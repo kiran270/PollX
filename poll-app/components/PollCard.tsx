@@ -28,9 +28,10 @@ interface Poll {
   }
 }
 
-export default function PollCard({ poll }: { poll: Poll }) {
+export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   const { data: session } = useSession()
   const router = useRouter()
+  const [poll, setPoll] = useState<Poll>(initialPoll)
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [hasVoted, setHasVoted] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState("")
@@ -89,8 +90,13 @@ export default function PollCard({ poll }: { poll: Poll }) {
 
       if (response.ok) {
         setHasVoted(true)
-        // Don't reload the page - just update the state
-        // The UI will show "Vote submitted" message
+        
+        // Fetch updated poll data to show new vote counts
+        const pollResponse = await fetch(`/api/polls/${poll.id}`)
+        if (pollResponse.ok) {
+          const updatedPoll = await pollResponse.json()
+          setPoll(updatedPoll)
+        }
       } else {
         const data = await response.json()
         if (response.status === 401) {
@@ -199,7 +205,7 @@ export default function PollCard({ poll }: { poll: Poll }) {
       </div>
 
       <div className="space-y-2.5 mb-5">
-        {poll.options.map((option, index) => {
+        {poll.options.map((option) => {
           const voteCount = option.votes.length
           const percentage = getPercentage(voteCount)
           const isSelected = selectedOption === option.id
