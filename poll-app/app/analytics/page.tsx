@@ -296,7 +296,8 @@ export default function AnalyticsPage() {
 
           {showUsers && (
             <div className="mt-4 bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-              <div className="overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden lg:block overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-800/50">
                     <tr>
@@ -392,6 +393,83 @@ export default function AnalyticsPage() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="lg:hidden divide-y divide-slate-800">
+                {users.map((user) => (
+                  <div key={user.id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-white truncate">
+                          {user.name || "Unknown"}
+                        </div>
+                        <div className="text-xs text-slate-400 truncate">
+                          {user.email}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() =>
+                          handleDeleteUser(user.id, user.name || user.email)
+                        }
+                        className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                        title="Delete user"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <div className="text-xs text-slate-400 mb-1">Role</div>
+                        <select
+                          value={user.role}
+                          onChange={(e) =>
+                            handleRoleChange(user.id, e.target.value)
+                          }
+                          className={`w-full px-3 py-1.5 rounded-lg text-xs font-medium border bg-slate-800 cursor-pointer ${
+                            user.role === "admin"
+                              ? "text-purple-400 border-purple-500/20"
+                              : "text-blue-400 border-blue-500/20"
+                          }`}
+                        >
+                          <option value="member" className="bg-slate-800 text-white">
+                            member
+                          </option>
+                          <option value="admin" className="bg-slate-800 text-white">
+                            admin
+                          </option>
+                        </select>
+                      </div>
+                      
+                      <div className="text-center">
+                        <div className="text-xs text-slate-400 mb-1">Polls</div>
+                        <div className="text-sm font-medium text-slate-300">{user._count.polls}</div>
+                      </div>
+                      
+                      <div className="text-center">
+                        <div className="text-xs text-slate-400 mb-1">Votes</div>
+                        <div className="text-sm font-medium text-slate-300">{user._count.votes}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-xs text-slate-500">
+                      Joined {new Date(user.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

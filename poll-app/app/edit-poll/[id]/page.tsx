@@ -133,7 +133,7 @@ export default function EditPollPage() {
 
   if (loading || status === "loading") {
     return (
-      <div className="ml-64 min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-slate-700 border-t-blue-500 mb-4"></div>
           <p className="text-slate-400">Loading...</p>
@@ -147,7 +147,7 @@ export default function EditPollPage() {
   }
 
   return (
-    <div className="ml-64 min-h-screen bg-slate-950 p-8 grid-bg">
+    <div className="lg:ml-64 min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 grid-bg">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8 fade-in">
           <h1 className="text-4xl font-bold text-white mb-2">Edit Poll</h1>
@@ -155,7 +155,7 @@ export default function EditPollPage() {
         </div>
 
         {poll && (
-          <div className="bg-slate-900 rounded-xl p-6 border border-slate-800 mb-6 fade-in">
+          <div className="bg-slate-900 rounded-xl p-4 sm:p-6 border border-slate-800 mb-6 fade-in">
             <h2 className="text-lg font-semibold text-white mb-4">Current Poll Details</h2>
             <div className="space-y-3">
               <div>
@@ -170,7 +170,7 @@ export default function EditPollPage() {
               </div>
               <div>
                 <span className="text-sm text-slate-400">Expires:</span>
-                <span className="ml-2 text-white font-medium">
+                <span className="ml-2 text-white font-medium text-xs sm:text-sm break-words">
                   {new Date(poll.expiresAt).toLocaleString()}
                 </span>
               </div>
@@ -178,9 +178,9 @@ export default function EditPollPage() {
                 <span className="text-sm text-slate-400 block mb-2">Options & Votes:</span>
                 <div className="space-y-2">
                   {poll.options.map((option: any) => (
-                    <div key={option.id} className="flex items-center justify-between bg-slate-800/50 rounded-lg px-3 py-2">
-                      <span className="text-white text-sm">{option.text}</span>
-                      <span className="text-blue-400 font-medium text-sm">{option.votes.length} votes</span>
+                    <div key={option.id} className="flex items-center justify-between gap-2 bg-slate-800/50 rounded-lg px-3 py-2">
+                      <span className="text-white text-sm flex-1 break-words">{option.text}</span>
+                      <span className="text-blue-400 font-medium text-sm whitespace-nowrap">{option.votes.length} votes</span>
                     </div>
                   ))}
                 </div>
@@ -189,7 +189,7 @@ export default function EditPollPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="bg-slate-900 rounded-xl p-8 border border-slate-800 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-slate-900 rounded-xl p-4 sm:p-6 lg:p-8 border border-slate-800 space-y-6">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Poll Question
@@ -236,7 +236,7 @@ export default function EditPollPage() {
             </div>
             <div className="space-y-2">
               {options.map((option, index) => (
-                <div key={index} className="flex gap-2">
+                <div key={index} className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     value={option.text}
@@ -247,7 +247,7 @@ export default function EditPollPage() {
                   />
                   <div className="flex items-center gap-2">
                     {option.votes !== undefined && !option.isNew && (
-                      <span className="text-xs text-slate-400 bg-slate-800 px-2 py-2 rounded-lg min-w-[60px] text-center">
+                      <span className="text-xs text-slate-400 bg-slate-800 px-3 py-2 rounded-lg whitespace-nowrap">
                         {option.votes} votes
                       </span>
                     )}
@@ -255,7 +255,7 @@ export default function EditPollPage() {
                       type="button"
                       onClick={() => removeOption(index)}
                       disabled={options.length <= 2}
-                      className="p-2.5 text-red-400 hover:bg-red-500/10 disabled:text-slate-600 disabled:hover:bg-transparent rounded-lg transition-colors"
+                      className="p-2.5 text-red-400 hover:bg-red-500/10 disabled:text-slate-600 disabled:hover:bg-transparent rounded-lg transition-colors flex-shrink-0"
                       title="Remove option"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,7 +295,7 @@ export default function EditPollPage() {
             </div>
           </div>
 
-          <div className="pt-4 flex gap-3">
+          <div className="pt-4 flex flex-col sm:flex-row gap-3">
             <button
               type="button"
               onClick={() => router.push("/")}
