@@ -8,17 +8,18 @@ export async function POST(
 ) {
   try {
     const session = await auth()
+    const { id: pollId } = await params
     
     if (!session?.user) {
       return NextResponse.json({ error: "Please sign in to vote" }, { status: 401 })
     }
 
-    const { id } = await params
     const body = await request.json()
     const { optionId } = body
 
+    // Check if poll exists and is not expired
     const poll = await prisma.poll.findUnique({
-      where: { id },
+      where: { id: pollId },
     })
 
     if (!poll) {
@@ -29,29 +30,41 @@ export async function POST(
       return NextResponse.json({ error: "Poll has expired" }, { status: 400 })
     }
 
+    // Check if user already voted
     const existingVote = await prisma.vote.findUnique({
       where: {
         userId_pollId: {
           userId: session.user.id,
-          pollId: id,
+          pollId,
         },
       },
     })
 
     if (existingVote) {
-      return NextResponse.json({ error: "You have already voted" }, { status: 400 })
+      // If vote change is allowed, update the vote
+      if (poll.allowVoteChange) {
+        const updatedVote = await prisma.vote.update({
+          where: { id: existingVote.id },
+          data: { optionId },
+        })
+        return NextResponse.json({ vote: updatedVote, changed: true })
+      } else {
+        return NextResponse.json({ error: "You have already voted on this poll" }, { status: 400 })
+      }
     }
 
+    // Create new vote
     const vote = await prisma.vote.create({
       data: {
         userId: session.user.id,
-        pollId: id,
+        pollId,
         optionId,
       },
     })
 
-    return NextResponse.json(vote)
+    return NextResponse.json({ vote, changed: false })
   } catch (error) {
+    console.error("Vote error:", error)
     return NextResponse.json({ error: "Failed to submit vote" }, { status: 500 })
   }
 }

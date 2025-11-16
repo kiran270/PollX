@@ -8,34 +8,44 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String     @id @default(cuid())
+  email     String     @unique
   name      String?
   image     String?
-  role      String   @default("user")
-  createdAt DateTime @default(now())
+  role      String     @default("user")
+  theme     String     @default("light")
+  createdAt DateTime   @default(now())
   polls     Poll[]
   votes     Vote[]
+  comments  Comment[]
+  reactions Reaction[]
 }
 
 model Poll {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  options     Option[]
-  expiresAt   DateTime
-  createdAt   DateTime @default(now())
-  createdBy   User     @relation(fields: [userId], references: [id])
-  userId      String
-  votes       Vote[]
+  id               String    @id @default(cuid())
+  title            String
+  description      String?
+  imageUrl         String?
+  category         String?
+  isPublic         Boolean   @default(true)
+  allowVoteChange  Boolean   @default(false)
+  options          Option[]
+  expiresAt        DateTime
+  createdAt        DateTime  @default(now())
+  createdBy        User      @relation(fields: [userId], references: [id])
+  userId           String
+  votes            Vote[]
+  comments         Comment[]
+  reactions        Reaction[]
 }
 
 model Option {
-  id     String @id @default(cuid())
-  text   String
-  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  pollId String
-  votes  Vote[]
+  id       String  @id @default(cuid())
+  text     String
+  imageUrl String?
+  poll     Poll    @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId   String
+  votes    Vote[]
 }
 
 model Vote {
@@ -49,4 +59,26 @@ model Vote {
   createdAt DateTime @default(now())
 
   @@unique([userId, pollId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  emoji     String
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, pollId, emoji])
 }

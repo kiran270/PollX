@@ -51,16 +51,8 @@ export async function DELETE(
   try {
     const session = await auth()
 
-    if (!session?.user?.email) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    })
-
-    if (user?.role !== "admin") {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
     const { id: pollId } = await params
@@ -71,13 +63,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid poll ID" }, { status: 400 })
     }
 
-    // Check if poll exists
+    // Check if poll exists and user owns it
     const existingPoll = await prisma.poll.findUnique({
       where: { id: pollId },
     })
 
     if (!existingPoll) {
       return NextResponse.json({ error: "Poll not found" }, { status: 404 })
+    }
+
+    // Check ownership
+    if (existingPoll.userId !== session.user.id) {
+      return NextResponse.json({ error: "You can only delete your own polls" }, { status: 403 })
     }
 
     // Get all options for this poll
@@ -120,16 +117,8 @@ export async function PATCH(
   try {
     const session = await auth()
 
-    if (!session?.user?.email) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    })
-
-    if (user?.role !== "admin") {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
     const { id: pollId } = await params
@@ -138,6 +127,20 @@ export async function PATCH(
 
     if (!pollId || typeof pollId !== 'string') {
       return NextResponse.json({ error: "Invalid poll ID" }, { status: 400 })
+    }
+
+    // Check if poll exists and user owns it
+    const existingPoll = await prisma.poll.findUnique({
+      where: { id: pollId },
+    })
+
+    if (!existingPoll) {
+      return NextResponse.json({ error: "Poll not found" }, { status: 404 })
+    }
+
+    // Check ownership
+    if (existingPoll.userId !== session.user.id) {
+      return NextResponse.json({ error: "You can only edit your own polls" }, { status: 403 })
     }
 
     // Handle option deletions
