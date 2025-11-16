@@ -4,6 +4,7 @@ A modern polling application built with Next.js 15, featuring Google authenticat
 
 ## Features
 
+### Core Features
 - 🔐 Google OAuth authentication
 - 👤 Role-based access (Admin/User)
 - 📊 Real-time poll results with percentages
@@ -11,6 +12,15 @@ A modern polling application built with Next.js 15, featuring Google authenticat
 - 🗳️ One vote per user per poll
 - 📱 Responsive design with Tailwind CSS
 - 💾 SQLite database with Prisma ORM
+
+### New Features ✨
+- 🏷️ **Poll Categories** - Organize polls by Politics, Sports, Entertainment, Technology, etc.
+- 🔍 **Search & Filter** - Find polls quickly with search and category filters
+- 🔄 **Vote Changes** - Allow users to change their vote (admin configurable)
+- 🔒 **Public/Private Polls** - Control poll visibility
+- 🌓 **Dark/Light Mode** - Full theme support with user preferences
+- 💬 **Comments & Discussion** - Engage with community through comments
+- 🔗 **Social Sharing** - Share polls on Twitter, Facebook, LinkedIn, WhatsApp
 
 ## Setup Instructions
 
@@ -79,9 +89,12 @@ Visit `http://localhost:3000`
 
 ### For Users:
 1. Sign in with Google
-2. View active polls on the homepage
-3. Select an option and submit your vote
-4. See real-time results and countdown timer
+2. **Browse & Search**: Use search bar and category filters to find polls
+3. **Vote**: Select an option and submit your vote
+4. **Change Vote**: If enabled by admin, change your vote before poll expires
+5. **Comment**: Click on polls to view details and join discussions
+6. **Share**: Share interesting polls on social media
+7. **Theme**: Toggle between dark and light mode in sidebar
 
 ### For Admins:
 1. Sign in with Google (ensure your role is set to "admin")
@@ -89,9 +102,13 @@ Visit `http://localhost:3000`
 3. Fill in poll details:
    - Title (required)
    - Description (optional)
+   - Category (optional) - Choose from predefined categories
    - At least 2 options
    - Expiration time in hours
+   - **Public/Private** - Toggle poll visibility
+   - **Allow Vote Changes** - Let users change their votes
 4. Submit to create the poll
+5. Edit or delete polls from the poll cards
 
 ## Tech Stack
 

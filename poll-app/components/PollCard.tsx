@@ -14,6 +14,7 @@ interface Vote {
 interface Option {
   id: string
   text: string
+  imageUrl: string | null
   votes: Vote[]
 }
 
@@ -21,10 +22,14 @@ interface Poll {
   id: string
   title: string
   description: string | null
+  imageUrl: string | null
+  category: string | null
   expiresAt: string
+  userId: string
   options: Option[]
   _count: {
     votes: number
+    comments: number
   }
 }
 
@@ -36,6 +41,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   const [hasVoted, setHasVoted] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState("")
   const [isExpired, setIsExpired] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
 
   // Check if user has already voted
   useEffect(() => {
@@ -128,7 +134,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   }
 
   const leadingOptionId = getLeadingOption()
-  const isAdmin = session?.user?.role === "admin"
+  const isOwner = session?.user?.id === poll.userId
 
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this poll? This action cannot be undone.")) {
@@ -161,13 +167,68 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
     router.push(`/edit-poll/${poll.id}`)
   }
 
+  const handleShare = async () => {
+    // Prevent multiple simultaneous share attempts
+    if (isSharing) return
+    
+    setIsSharing(true)
+    const url = `${window.location.origin}/poll/${poll.id}`
+    
+    try {
+      if (navigator.share) {
+        // Use native share if available (mobile)
+        await navigator.share({
+          title: poll.title,
+          text: poll.description || `Vote on: ${poll.title}`,
+          url: url,
+        })
+      } else {
+        // Fallback: copy to clipboard
+        await navigator.clipboard.writeText(url)
+        alert('Poll link copied to clipboard!')
+      }
+    } catch (error: any) {
+      // Ignore AbortError (user cancelled share dialog)
+      if (error.name !== 'AbortError') {
+        console.error('Error sharing:', error)
+        // Try clipboard as fallback if native share fails
+        try {
+          await navigator.clipboard.writeText(url)
+          alert('Poll link copied to clipboard!')
+        } catch (clipboardError) {
+          console.error('Failed to copy:', clipboardError)
+          alert('Failed to share. Link: ' + url)
+        }
+      }
+    } finally {
+      // Reset sharing state after a short delay
+      setTimeout(() => setIsSharing(false), 1000)
+    }
+  }
+
   return (
     <div className="bg-slate-900 rounded-xl p-6 border border-slate-800 card-hover">
+      {poll.imageUrl && (
+        <div className="mb-4 -mx-6 -mt-6">
+          <img 
+            src={poll.imageUrl} 
+            alt={poll.title} 
+            className="w-full h-48 object-cover rounded-t-xl"
+          />
+        </div>
+      )}
       <div className="flex items-start justify-between mb-5">
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-white mb-1">{poll.title}</h3>
+          <h3 className="text-lg font-bold text-white mb-1 hover:text-blue-400 cursor-pointer" onClick={() => router.push(`/poll/${poll.id}`)}>
+            {poll.title}
+          </h3>
           {poll.description && (
             <p className="text-sm text-slate-400">{poll.description}</p>
+          )}
+          {poll.category && (
+            <span className="inline-block mt-2 px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded border border-blue-500/20">
+              {poll.category}
+            </span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -179,28 +240,45 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
             {timeRemaining}
           </div>
 
-          {isAdmin && (
-            <div className="flex gap-1">
-              <button
-                onClick={handleEdit}
-                className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
-                title="Edit poll"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-              </button>
-              <button
-                onClick={handleDelete}
-                className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                title="Delete poll"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
-            </div>
-          )}
+          <div className="flex gap-1">
+            <button
+              onClick={handleShare}
+              disabled={isSharing}
+              className={`p-1.5 rounded-lg transition-colors ${
+                isSharing 
+                  ? "text-slate-600 cursor-not-allowed" 
+                  : "text-slate-400 hover:text-blue-400 hover:bg-blue-500/10"
+              }`}
+              title={isSharing ? "Sharing..." : "Share poll"}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+
+            {isOwner && (
+              <>
+                <button
+                  onClick={handleEdit}
+                  className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
+                  title="Edit poll"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                  title="Delete poll"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -241,6 +319,13 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
 
                   <div className="relative flex items-center justify-between p-3">
                     <div className="flex items-center gap-3 flex-1">
+                      {option.imageUrl && (
+                        <img 
+                          src={option.imageUrl} 
+                          alt={option.text} 
+                          className="w-12 h-12 object-cover rounded border border-slate-700"
+                        />
+                      )}
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected
                         ? "border-blue-500 bg-blue-500"
                         : "border-slate-600 bg-transparent"
@@ -294,6 +379,15 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
 
       <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
         <span>{totalVotes} total votes</span>
+        <button
+          onClick={() => router.push(`/poll/${poll.id}`)}
+          className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          {poll._count.comments} comments
+        </button>
       </div>
     </div>
   )
