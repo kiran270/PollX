@@ -18,6 +18,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   trustHost: true,
   debug: process.env.NODE_ENV === 'development',
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+  },
   callbacks: {
     async signIn({ user }) {
       if (!user.email) return false
