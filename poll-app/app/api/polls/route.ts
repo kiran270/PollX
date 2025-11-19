@@ -27,11 +27,17 @@ export async function GET(request: Request) {
 
     let polls = await prisma.poll.findMany({
       where,
+      take: 50, // Limit to 50 polls
       include: {
         options: {
-          include: {
-            votes: true,
-          },
+          select: {
+            id: true,
+            text: true,
+            imageUrl: true,
+            _count: {
+              select: { votes: true }
+            }
+          }
         },
         createdBy: {
           select: {

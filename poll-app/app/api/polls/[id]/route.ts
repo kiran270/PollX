@@ -14,9 +14,14 @@ export async function GET(
       where: { id: pollId },
       include: {
         options: {
-          include: {
-            votes: true,
-          },
+          select: {
+            id: true,
+            text: true,
+            imageUrl: true,
+            _count: {
+              select: { votes: true }
+            }
+          }
         },
         createdBy: {
           select: {
@@ -187,12 +192,14 @@ export async function PATCH(
       },
       include: {
         options: {
-          include: {
-            votes: true,
+          select: {
+            id: true,
+            text: true,
+            imageUrl: true,
             _count: {
-              select: { votes: true },
-            },
-          },
+              select: { votes: true }
+            }
+          }
         },
       },
     })
