@@ -7,6 +7,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const search = searchParams.get("search")
     const category = searchParams.get("category")
+    const page = parseInt(searchParams.get("page") || "1")
+    const limit = 10
+    const skip = (page - 1) * limit
     const session = await auth()
 
     const where: any = {}
@@ -25,15 +28,17 @@ export async function GET(request: Request) {
       where.category = category
     }
 
-    let polls = await prisma.poll.findMany({
-      where,
-      take: 50, // Limit to 50 polls
+    const [polls, total] = await Promise.all([
+      prisma.poll.findMany({
+        where,
+        take: limit,
+        skip,
       include: {
         options: {
           select: {
             id: true,
             text: true,
-            imageUrl: true,
+            // Don't include imageUrl to reduce size
             _count: {
               select: { votes: true }
             }
@@ -42,7 +47,6 @@ export async function GET(request: Request) {
         createdBy: {
           select: {
             name: true,
-            email: true,
           },
         },
         _count: {
@@ -52,10 +56,12 @@ export async function GET(request: Request) {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.poll.count({ where })
+    ])
 
     // Filter by search in memory (case-insensitive)
     if (searchLower) {
@@ -65,7 +71,15 @@ export async function GET(request: Request) {
       )
     }
 
-    return NextResponse.json(polls)
+    return NextResponse.json({
+      polls,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+      }
+    })
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch polls" }, { status: 500 })
   }
