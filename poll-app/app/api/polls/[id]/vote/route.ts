@@ -2,6 +2,37 @@ import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await auth()
+    const { id: pollId } = await params
+    
+    if (!session?.user) {
+      return NextResponse.json({ hasVoted: false })
+    }
+
+    const existingVote = await prisma.vote.findUnique({
+      where: {
+        userId_pollId: {
+          userId: session.user.id,
+          pollId,
+        },
+      },
+    })
+
+    return NextResponse.json({ 
+      hasVoted: !!existingVote,
+      optionId: existingVote?.optionId || null
+    })
+  } catch (error) {
+    console.error("Check vote error:", error)
+    return NextResponse.json({ hasVoted: false })
+  }
+}
+
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

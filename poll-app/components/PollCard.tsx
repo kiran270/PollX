@@ -15,7 +15,9 @@ interface Option {
   id: string
   text: string
   imageUrl: string | null
-  votes: Vote[]
+  _count: {
+    votes: number
+  }
 }
 
 interface Poll {
@@ -43,15 +45,23 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   const [isExpired, setIsExpired] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
 
-  // Check if user has already voted
+  // Check if user has already voted - need to fetch from API
   useEffect(() => {
-    if (session?.user?.id) {
-      const userVoted = poll.options.some(option =>
-        option.votes.some(vote => vote.userId === session.user.id)
-      )
-      setHasVoted(userVoted)
+    const checkVoteStatus = async () => {
+      if (session?.user?.id) {
+        try {
+          const response = await fetch(`/api/polls/${poll.id}/vote`)
+          if (response.ok) {
+            const data = await response.json()
+            setHasVoted(data.hasVoted)
+          }
+        } catch (error) {
+          console.error("Failed to check vote status:", error)
+        }
+      }
     }
-  }, [session, poll.options])
+    checkVoteStatus()
+  }, [session, poll.id])
 
   useEffect(() => {
     const updateTimer = () => {
@@ -125,8 +135,8 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
     let maxVotes = 0
     let leadingId = ""
     poll.options.forEach(opt => {
-      if (opt.votes.length > maxVotes) {
-        maxVotes = opt.votes.length
+      if (opt._count.votes > maxVotes) {
+        maxVotes = opt._count.votes
         leadingId = opt.id
       }
     })
@@ -284,7 +294,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
 
       <div className="space-y-2.5 mb-5">
         {poll.options.map((option) => {
-          const voteCount = option.votes.length
+          const voteCount = option._count.votes
           const percentage = getPercentage(voteCount)
           const isSelected = selectedOption === option.id
           const isLeading = option.id === leadingOptionId && totalVotes > 0

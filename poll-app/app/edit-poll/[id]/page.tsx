@@ -45,7 +45,7 @@ export default function EditPollPage() {
         setOptions(pollData.options.map((opt: any) => ({
           id: opt.id,
           text: opt.text,
-          votes: opt.votes.length,
+          votes: opt._count.votes,
         })))
         
         // Calculate hours until expiration
@@ -180,7 +180,7 @@ export default function EditPollPage() {
                   {poll.options.map((option: any) => (
                     <div key={option.id} className="flex items-center justify-between gap-2 bg-slate-800/50 rounded-lg px-3 py-2">
                       <span className="text-white text-sm flex-1 break-words">{option.text}</span>
-                      <span className="text-blue-400 font-medium text-sm whitespace-nowrap">{option.votes.length} votes</span>
+                      <span className="text-blue-400 font-medium text-sm whitespace-nowrap">{option._count.votes} votes</span>
                     </div>
                   ))}
                 </div>

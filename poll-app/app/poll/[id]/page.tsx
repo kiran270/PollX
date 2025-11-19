@@ -41,16 +41,13 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
       setPoll(data)
       
       if (session?.user?.id) {
-        const voted = data.options.some((opt: any) =>
-          opt.votes.some((v: any) => v.userId === session.user.id)
-        )
-        setHasVoted(voted)
+        // Check vote status via API
+        const voteRes = await fetch(`/api/polls/${id}/vote`)
+        const voteData = await voteRes.json()
+        setHasVoted(voteData.hasVoted)
         
-        if (voted) {
-          const votedOption = data.options.find((opt: any) =>
-            opt.votes.some((v: any) => v.userId === session.user.id)
-          )
-          setUserVote(votedOption?.id || "")
+        if (voteData.hasVoted && voteData.optionId) {
+          setUserVote(voteData.optionId)
         }
       }
     } catch (error) {
@@ -265,7 +262,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
 
           <div className="space-y-3 mb-4">
             {poll.options.map((option: any) => {
-              const voteCount = option.votes.length
+              const voteCount = option._count.votes
               const percentage = getPercentage(voteCount)
               const isSelected = selectedOption === option.id
               const isUserVote = userVote === option.id
