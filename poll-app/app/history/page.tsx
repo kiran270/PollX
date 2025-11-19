@@ -8,6 +8,8 @@ export default function Page() {
   const { data: session, status } = useSession()
   const [polls, setPolls] = useState([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   useEffect(() => {
     if (status === "loading") return
@@ -17,15 +19,19 @@ export default function Page() {
       return
     }
 
-    fetch("/api/polls")
+    fetch(`/api/polls?page=${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
-        const expiredPolls = data.filter((poll: any) => new Date(poll.expiresAt) <= new Date())
+        const pollsData = data.polls || data
+        const expiredPolls = pollsData.filter((poll: any) => new Date(poll.expiresAt) <= new Date())
         setPolls(expiredPolls)
+        if (data.pagination) {
+          setTotalPages(data.pagination.totalPages)
+        }
         setLoading(false)
       })
       .catch(() => setLoading(false))
-  }, [session, status])
+  }, [session, status, currentPage])
 
   if (loading || status === "loading") {
     return (
@@ -82,6 +88,29 @@ export default function Page() {
                 <PollCard poll={poll} />
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {polls.length > 0 && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-slate-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors"
+            >
+              Previous
+            </button>
+            <span className="text-slate-400 px-4">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-slate-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>
