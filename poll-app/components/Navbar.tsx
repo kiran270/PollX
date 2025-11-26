@@ -5,15 +5,17 @@ import { usePathname } from "next/navigation"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useState } from "react"
 import { useTheme } from "./ThemeProvider"
+import Logo from "./Logo"
 
 function ThemeToggle() {
   try {
     const { theme, toggleTheme } = useTheme()
+    const textClass = theme === "dark" ? "text-white" : "text-black"
 
     return (
       <button
         onClick={toggleTheme}
-        className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+        className={`w-full flex items-center justify-between px-4 py-3 rounded-lg ${textClass} hover:text-[#E31E24] transition-all`}
       >
         <span className="flex items-center gap-3">
           {theme === "dark" ? (
@@ -40,26 +42,39 @@ export default function Navbar() {
   const pathname = usePathname()
   const { data: session, status } = useSession()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  
+  let theme = "dark"
+  try {
+    const themeContext = useTheme()
+    theme = themeContext.theme
+  } catch {
+    // Theme provider not available
+  }
 
   const isAdmin = session?.user?.role === "admin"
   const isLoading = status === "loading"
+  
+  // Theme-aware classes
+  const bgClass = theme === "dark" ? "bg-black" : "bg-white"
+  const borderClass = theme === "dark" ? "border-white/10" : "border-black/10"
+  const textClass = theme === "dark" ? "text-white" : "text-black"
+  const textMutedClass = theme === "dark" ? "text-white/60" : "text-black/60"
+  const hoverTextClass = "hover:text-[#E31E24]"
+  const inactiveBgClass = theme === "dark" ? "bg-white/5" : "bg-black/5"
 
   return (
     <>
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 z-50">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-            <span className="text-xl">📊</span>
-          </div>
-          <h1 className="text-xl font-bold text-white">PollX</h1>
+      <div className={`lg:hidden fixed top-0 left-0 right-0 h-16 ${bgClass} border-b ${borderClass} flex items-center justify-between px-4 z-50`}>
+        <Link href="/" className="flex items-center">
+          <Logo className="h-10 w-20" />
         </Link>
 
         <div className="flex items-center gap-2">
           {!isLoading && !session && (
             <button
               onClick={() => signIn("google")}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#E31E24] hover:bg-[#C41A1F] text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -73,7 +88,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className={`p-2 ${textClass} hover:text-[#E31E24] transition-colors`}
           >
             {isMobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,18 +112,12 @@ export default function Navbar() {
       )}
 
       {/* Sidebar - Desktop & Mobile */}
-      <div className={`fixed top-0 h-screen w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-50 transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      <div className={`fixed top-0 h-screen w-64 ${bgClass} border-r ${borderClass} flex flex-col z-50 transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         } lg:left-0`}>
         {/* Logo - Desktop Only */}
-        <div className="hidden lg:block p-6 border-b border-slate-800">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">📊</span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">PollX</h1>
-              <p className="text-xs text-slate-400">Voting Platform</p>
-            </div>
+        <div className={`hidden lg:block p-4 border-b ${borderClass}`}>
+          <Link href="/" className="flex items-center justify-center group">
+            <Logo className="h-20 w-32" />
           </Link>
         </div>
 
@@ -117,8 +126,8 @@ export default function Navbar() {
           <Link
             href="/"
             className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/"
-              ? "bg-blue-600 text-white"
-              : "text-slate-400 hover:text-white hover:bg-slate-800"
+              ? "bg-[#E31E24] text-white"
+              : `${textClass} ${hoverTextClass}`
               }`}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -130,8 +139,8 @@ export default function Navbar() {
           <Link
             href="/history"
             className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/history"
-              ? "bg-blue-600 text-white"
-              : "text-slate-400 hover:text-white hover:bg-slate-800"
+              ? "bg-[#E31E24] text-white"
+              : `${textClass} ${hoverTextClass}`
               }`}
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -144,8 +153,8 @@ export default function Navbar() {
             <Link
               href="/create-poll"
               className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/create-poll"
-                ? "bg-blue-600 text-white"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
+                ? "bg-[#E31E24] text-white"
+                : `${textClass} ${hoverTextClass}`
                 }`}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -159,8 +168,8 @@ export default function Navbar() {
             <Link
               href="/analytics"
               className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/analytics"
-                ? "bg-blue-600 text-white"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
+                ? "bg-[#E31E24] text-white"
+                : `${textClass} ${hoverTextClass}`
                 }`}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -177,14 +186,14 @@ export default function Navbar() {
         </div>
 
         {/* User Info / Sign In */}
-        <div className="p-4 border-t border-slate-800">
+        <div className={`p-4 border-t ${borderClass}`}>
           {isLoading ? (
             <div className="flex items-center justify-center p-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-slate-600 border-t-blue-500"></div>
+              <div className={`animate-spin rounded-full h-6 w-6 border-2 ${theme === "dark" ? "border-white/20" : "border-black/20"} border-t-[#E31E24]`}></div>
             </div>
           ) : session ? (
             <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-slate-800 rounded-lg">
+              <div className={`flex items-center gap-3 p-3 ${inactiveBgClass} rounded-lg`}>
                 {session.user?.image ? (
                   <img
                     src={session.user.image}
@@ -192,22 +201,22 @@ export default function Navbar() {
                     className="w-10 h-10 rounded-full"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 bg-[#E31E24] rounded-full flex items-center justify-center text-white font-bold">
                     {session.user?.name?.charAt(0) || "U"}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">
+                  <p className={`text-sm font-semibold ${textClass} truncate`}>
                     {session.user?.name || "User"}
                   </p>
-                  <p className="text-xs text-slate-400">
+                  <p className={`text-xs ${textMutedClass}`}>
                     {session.user?.role || "MEMBER"}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => signOut()}
-                className="w-full px-4 py-2 text-sm text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all flex items-center justify-center gap-2"
+                className={`w-full px-4 py-2 text-sm ${textClass} ${hoverTextClass} rounded-lg transition-all flex items-center justify-center gap-2`}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
@@ -218,7 +227,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full px-4 py-3 bg-[#E31E24] hover:bg-[#C41A1F] text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

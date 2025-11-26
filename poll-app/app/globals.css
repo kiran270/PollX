@@ -1,33 +1,17 @@
 @import "tailwindcss";
-
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --border-color: #e2e8f0;
-}
-
-.dark {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --border-color: #334155;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import "./theme-config.css";
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Light mode (default) */
 body:not(.dark-mode) {
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--color-light-bg);
+  color: var(--color-light-text);
 }
 
 body:not(.dark-mode) .bg-slate-950 {
@@ -35,17 +19,17 @@ body:not(.dark-mode) .bg-slate-950 {
 }
 
 body:not(.dark-mode) .bg-slate-900 {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 body:not(.dark-mode) .bg-slate-800 {
   background: #ffffff !important;
-  border-color: #e2e8f0 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 body:not(.dark-mode) .bg-slate-700 {
-  background: #f1f5f9 !important;
+  background: #ffffff !important;
 }
 
 body:not(.dark-mode) .text-white {
@@ -65,15 +49,15 @@ body:not(.dark-mode) .text-slate-500 {
 }
 
 body:not(.dark-mode) .border-slate-800 {
-  border-color: #e2e8f0 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 body:not(.dark-mode) .border-slate-700 {
-  border-color: #cbd5e1 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 body:not(.dark-mode) .border-slate-600 {
-  border-color: #94a3b8 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 body:not(.dark-mode) .text-slate-600 {
@@ -94,65 +78,85 @@ body:not(.dark-mode) .text-slate-900 {
 
 /* Poll option backgrounds in light mode */
 body:not(.dark-mode) .bg-slate-800\/50 {
-  background: rgba(241, 245, 249, 0.8) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Hover states in light mode */
 body:not(.dark-mode) .hover\:bg-slate-800:hover {
-  background: #f1f5f9 !important;
+  background: #E31E24 !important;
+  color: #FFFFFF !important;
 }
 
 body:not(.dark-mode) .hover\:bg-slate-700:hover {
-  background: #e2e8f0 !important;
+  background: #E31E24 !important;
+  color: #FFFFFF !important;
 }
 
 body:not(.dark-mode) .hover\:border-slate-600:hover {
-  border-color: #94a3b8 !important;
+  border-color: #E31E24 !important;
 }
 
 body:not(.dark-mode) .hover\:text-white:hover {
   color: #0f172a !important;
 }
 
-/* Blue colors for buttons and selected states */
-body:not(.dark-mode) .bg-blue-600 {
-  background: #2563eb !important;
+/* Red colors for buttons and selected states (PollMitra primary) */
+body:not(.dark-mode) .bg-blue-600,
+body:not(.dark-mode) .bg-blue-500,
+body:not(.dark-mode) .bg-green-600,
+body:not(.dark-mode) .bg-green-500,
+body:not(.dark-mode) .bg-amber-600,
+body:not(.dark-mode) .bg-amber-500,
+body:not(.dark-mode) .bg-purple-600,
+body:not(.dark-mode) .bg-purple-500,
+body:not(.dark-mode) .bg-indigo-600,
+body:not(.dark-mode) .bg-indigo-500,
+body:not(.dark-mode) .bg-\[#F5A623\],
+body:not(.dark-mode) .bg-\[#3D2E5C\] {
+  background: #E31E24 !important;
   color: #ffffff !important;
 }
 
-body:not(.dark-mode) .bg-blue-500 {
-  background: #3b82f6 !important;
+body:not(.dark-mode) .hover\:bg-blue-700:hover,
+body:not(.dark-mode) .hover\:bg-blue-600:hover,
+body:not(.dark-mode) .hover\:bg-green-700:hover,
+body:not(.dark-mode) .hover\:bg-green-600:hover,
+body:not(.dark-mode) .hover\:bg-amber-700:hover,
+body:not(.dark-mode) .hover\:bg-purple-700:hover {
+  background: #C41A1F !important;
   color: #ffffff !important;
 }
 
-body:not(.dark-mode) .hover\:bg-blue-700:hover {
-  background: #1d4ed8 !important;
-  color: #ffffff !important;
+body:not(.dark-mode) .bg-blue-500\/10,
+body:not(.dark-mode) .bg-green-500\/10,
+body:not(.dark-mode) .bg-amber-500\/10,
+body:not(.dark-mode) .bg-purple-500\/10 {
+  background: rgba(227, 30, 36, 0.1) !important;
 }
 
-body:not(.dark-mode) .hover\:bg-blue-600:hover {
-  background: #2563eb !important;
-  color: #ffffff !important;
+body:not(.dark-mode) .border-blue-500,
+body:not(.dark-mode) .border-green-500,
+body:not(.dark-mode) .border-amber-500,
+body:not(.dark-mode) .border-purple-500 {
+  border-color: #E31E24 !important;
 }
 
-body:not(.dark-mode) .bg-blue-500\/10 {
-  background: rgba(59, 130, 246, 0.1) !important;
+body:not(.dark-mode) .text-blue-400,
+body:not(.dark-mode) .text-blue-500,
+body:not(.dark-mode) .text-blue-600,
+body:not(.dark-mode) .text-green-400,
+body:not(.dark-mode) .text-green-500,
+body:not(.dark-mode) .text-amber-400,
+body:not(.dark-mode) .text-amber-500,
+body:not(.dark-mode) .text-purple-400,
+body:not(.dark-mode) .text-purple-500 {
+  color: #E31E24 !important;
 }
 
-body:not(.dark-mode) .border-blue-500 {
-  border-color: #3b82f6 !important;
-}
-
-body:not(.dark-mode) .text-blue-400 {
-  color: #3b82f6 !important;
-}
-
-body:not(.dark-mode) .text-blue-500 {
-  color: #2563eb !important;
-}
-
-body:not(.dark-mode) .text-blue-600 {
-  color: #1d4ed8 !important;
+/* Red accent colors */
+body:not(.dark-mode) .text-\[#3D2E5C\],
+body:not(.dark-mode) .text-\[#F5A623\] {
+  color: #E31E24 !important;
 }
 
 /* Disabled button states */
@@ -169,31 +173,9 @@ body:not(.dark-mode) .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed !important;
 }
 
-/* Green colors for success states */
-body:not(.dark-mode) .bg-green-600 {
-  background: #16a34a !important;
-  color: #ffffff !important;
-}
-
-body:not(.dark-mode) .bg-green-500 {
-  background: #22c55e !important;
-  color: #ffffff !important;
-}
-
-body:not(.dark-mode) .bg-green-500\/10 {
-  background: rgba(34, 197, 94, 0.1) !important;
-}
-
+/* Green colors replaced with red */
 body:not(.dark-mode) .border-green-500\/20 {
-  border-color: rgba(34, 197, 94, 0.2) !important;
-}
-
-body:not(.dark-mode) .text-green-400 {
-  color: #22c55e !important;
-}
-
-body:not(.dark-mode) .text-green-500 {
-  color: #16a34a !important;
+  border-color: rgba(227, 30, 36, 0.2) !important;
 }
 
 /* Red colors for error/delete states */
@@ -224,37 +206,15 @@ body:not(.dark-mode) .hover\:bg-red-500\/10:hover {
   background: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Amber colors for leading/warning states */
-body:not(.dark-mode) .bg-amber-600 {
-  background: #d97706 !important;
-  color: #ffffff !important;
-}
+/* Amber colors replaced with red - handled above */
 
-body:not(.dark-mode) .bg-amber-500 {
-  background: #f59e0b !important;
-  color: #ffffff !important;
-}
-
-body:not(.dark-mode) .hover\:bg-amber-700:hover {
-  background: #b45309 !important;
-  color: #ffffff !important;
-}
-
-body:not(.dark-mode) .text-amber-500 {
-  color: #f59e0b !important;
-}
-
-body:not(.dark-mode) .text-amber-600 {
-  color: #d97706 !important;
-}
-
-/* Gray backgrounds for inputs */
+/* White backgrounds for inputs */
 body:not(.dark-mode) .bg-gray-100 {
-  background: #f3f4f6 !important;
+  background: #ffffff !important;
 }
 
 body:not(.dark-mode) .bg-gray-200 {
-  background: #e5e7eb !important;
+  background: #ffffff !important;
 }
 
 body:not(.dark-mode) .text-gray-700 {
@@ -269,15 +229,20 @@ body:not(.dark-mode) .text-gray-500 {
   color: #6b7280 !important;
 }
 
-/* Button text visibility - ensure white text on colored buttons */
+/* Button text visibility - ensure white text on all colored buttons */
 body:not(.dark-mode) button.bg-blue-600,
 body:not(.dark-mode) button.bg-blue-500,
 body:not(.dark-mode) button.bg-green-600,
 body:not(.dark-mode) button.bg-green-500,
 body:not(.dark-mode) button.bg-amber-600,
 body:not(.dark-mode) button.bg-amber-500,
+body:not(.dark-mode) button.bg-purple-600,
+body:not(.dark-mode) button.bg-purple-500,
 body:not(.dark-mode) button.bg-red-600,
-body:not(.dark-mode) button.bg-red-500 {
+body:not(.dark-mode) button.bg-red-500,
+body:not(.dark-mode) button.bg-\[#E31E24\],
+body:not(.dark-mode) button.bg-\[#F5A623\],
+body:not(.dark-mode) button.bg-\[#3D2E5C\] {
   color: #ffffff !important;
 }
 
@@ -289,14 +254,16 @@ body:not(.dark-mode) button:hover {
 body:not(.dark-mode) .bg-blue-600 .text-white,
 body:not(.dark-mode) .bg-blue-500 .text-white,
 body:not(.dark-mode) .bg-green-600 .text-white,
-body:not(.dark-mode) .bg-amber-600 .text-white {
+body:not(.dark-mode) .bg-amber-600 .text-white,
+body:not(.dark-mode) .bg-red-600 .text-white,
+body:not(.dark-mode) .bg-\[#E31E24\] .text-white {
   color: #ffffff !important;
 }
 
 /* Dark mode */
 body.dark-mode {
-  background: #0f172a;
-  color: #e2e8f0;
+  background: var(--color-dark-bg);
+  color: var(--color-dark-text);
 }
 
 /* Subtle animations */
@@ -400,4 +367,1210 @@ body:not(.dark-mode) .grid-bg {
     linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+/* Removed duplicate color overrides - now handled in comprehensive section below */
+
+
+/* ============================================
+   POLLMITRA BRAND COLORS - RED & WHITE THEME
+   ============================================ */
+
+:root {
+  --primary-red: #E31E24;
+  --primary-red-dark: #C41A1F;
+  --primary-red-light: #FF3B41;
+  --text-dark: #2D2D2D;
+  --text-light: #FFFFFF;
+  --bg-white: #FFFFFF;
+  --bg-light: #F8F9FA;
+}
+
+/* ============================================
+   PRIMARY BUTTON & BACKGROUND COLORS - RED
+   ============================================ */
+
+/* All primary buttons and backgrounds */
+.bg-\[#F5A623\],
+.bg-\[#3D2E5C\],
+.bg-primary,
+.bg-primary-dark,
+.bg-secondary,
+body .bg-blue-600,
+body .bg-blue-500,
+body .bg-blue-400,
+body .bg-indigo-600,
+body .bg-indigo-500,
+body .bg-purple-600,
+body .bg-purple-500,
+body .bg-green-600,
+body .bg-green-500,
+body .bg-amber-600,
+body .bg-amber-500,
+body button.bg-blue-600,
+body button.bg-blue-500,
+body button.bg-green-600,
+body button.bg-green-500,
+body button.bg-amber-600,
+body button.bg-amber-500,
+body button.bg-purple-600,
+body button.bg-purple-500,
+body a.bg-blue-600,
+body a.bg-blue-500 {
+  background-color: #E31E24 !important;
+  color: #ffffff !important;
+}
+
+/* Hover states for all buttons */
+.hover\:bg-blue-700:hover,
+.hover\:bg-blue-600:hover,
+.hover\:bg-green-700:hover,
+.hover\:bg-amber-700:hover,
+.hover\:bg-purple-700:hover,
+body button:hover.bg-blue-600,
+body button:hover.bg-blue-700,
+body button:hover.bg-green-600,
+body button:hover.bg-amber-600,
+body button:hover.bg-purple-600 {
+  background-color: #C41A1F !important;
+  color: #ffffff !important;
+}
+
+/* ============================================
+   TEXT COLORS - RED FOR ACCENTS
+   ============================================ */
+
+.text-\[#F5A623\],
+.text-\[#3D2E5C\],
+.text-primary,
+.text-secondary,
+body .text-blue-400,
+body .text-blue-500,
+body .text-blue-600,
+body .text-green-400,
+body .text-green-500,
+body .text-green-600,
+body .text-amber-400,
+body .text-amber-500,
+body .text-amber-600,
+body .text-purple-400,
+body .text-purple-500,
+body .text-purple-600,
+body .text-indigo-400,
+body .text-indigo-500,
+body a.text-blue-400,
+body a.text-blue-500,
+body a.text-green-400,
+body a.text-amber-400 {
+  color: #E31E24 !important;
+}
+
+/* Link hover states */
+body a:hover.text-blue-400,
+body a:hover.text-blue-500 {
+  color: #C41A1F !important;
+}
+
+/* ============================================
+   BORDER COLORS - RED
+   ============================================ */
+
+.border-\[#F5A623\],
+.border-\[#3D2E5C\],
+.border-primary,
+.border-secondary,
+body .border-blue-500,
+body .border-blue-600,
+body .border-green-500,
+body .border-amber-500,
+body .border-purple-500,
+body .border-indigo-500,
+body .focus\:border-blue-500:focus,
+body .focus\:border-green-500:focus {
+  border-color: #E31E24 !important;
+}
+
+/* ============================================
+   BACKGROUNDS WITH OPACITY
+   ============================================ */
+
+.bg-\[#F5A623\]\/10,
+body .bg-blue-500\/10,
+body .bg-green-500\/10,
+body .bg-amber-500\/10,
+body .bg-purple-500\/10 {
+  background-color: rgba(227, 30, 36, 0.1) !important;
+}
+
+.border-\[#F5A623\]\/20,
+body .border-blue-500\/20,
+body .border-green-500\/20,
+body .border-amber-500\/20,
+body .border-purple-500\/20 {
+  border-color: rgba(227, 30, 36, 0.2) !important;
+}
+
+/* ============================================
+   FOCUS & RING STATES
+   ============================================ */
+
+body .focus\:ring-2:focus,
+body .focus\:ring-blue-500:focus,
+body .focus\:ring-green-500:focus,
+body .focus\:ring-amber-500:focus {
+  --tw-ring-color: rgba(227, 30, 36, 0.5) !important;
+}
+
+body input:focus,
+body textarea:focus,
+body select:focus {
+  border-color: #E31E24 !important;
+  --tw-ring-color: rgba(227, 30, 36, 0.3) !important;
+}
+
+/* ============================================
+   GRADIENTS - RED TO BLACK
+   ============================================ */
+
+body .from-blue-500,
+body .from-blue-600,
+body .from-green-500,
+body .from-amber-500,
+body .from-purple-500 {
+  --tw-gradient-from: #E31E24 !important;
+}
+
+body .to-blue-600,
+body .to-indigo-600,
+body .to-purple-600 {
+  --tw-gradient-to: #2D2D2D !important;
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #E31E24 0%, #C41A1F 100%) !important;
+}
+
+.gradient-primary-hover:hover {
+  background: linear-gradient(135deg, #C41A1F 0%, #A01519 100%) !important;
+}
+
+/* ============================================
+   ICON COLORS
+   ============================================ */
+
+body svg.text-blue-400,
+body svg.text-blue-500,
+body svg.text-green-400,
+body svg.text-amber-400,
+body svg.text-purple-400 {
+  color: #E31E24 !important;
+}
+
+/* ============================================
+   SELECTION COLORS
+   ============================================ */
+
+::selection {
+  background-color: #E31E24 !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background-color: #E31E24 !important;
+  color: #ffffff !important;
+}
+
+/* ============================================
+   BADGE & TAG COLORS
+   ============================================ */
+
+body .bg-blue-100,
+body .bg-green-100,
+body .bg-amber-100,
+body .bg-purple-100 {
+  background-color: rgba(227, 30, 36, 0.1) !important;
+  color: #E31E24 !important;
+}
+
+/* ============================================
+   PROGRESS BARS & INDICATORS
+   ============================================ */
+
+body .bg-blue-600[role="progressbar"],
+body .bg-green-600[role="progressbar"],
+body .bg-amber-600[role="progressbar"] {
+  background-color: #E31E24 !important;
+}
+
+/* ============================================
+   CHART & GRAPH COLORS
+   ============================================ */
+
+body [class*="recharts"] .fill-blue-500,
+body [class*="recharts"] .fill-green-500,
+body [class*="recharts"] .fill-amber-500 {
+  fill: #E31E24 !important;
+}
+
+body [class*="recharts"] .stroke-blue-500,
+body [class*="recharts"] .stroke-green-500,
+body [class*="recharts"] .stroke-amber-500 {
+  stroke: #E31E24 !important;
+}
+
+/* ============================================
+   DISABLED STATES - KEEP GRAY
+   ============================================ */
+
+body .disabled\:bg-slate-800:disabled,
+body button:disabled,
+body button[disabled] {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  cursor: not-allowed !important;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+body.dark-mode .bg-blue-600,
+body.dark-mode .bg-blue-500,
+body.dark-mode .bg-green-600,
+body.dark-mode .bg-green-500,
+body.dark-mode .bg-amber-600,
+body.dark-mode .bg-amber-500,
+body.dark-mode .bg-purple-600,
+body.dark-mode .bg-purple-500,
+body.dark-mode .bg-\[#F5A623\],
+body.dark-mode .bg-\[#3D2E5C\] {
+  background: #E31E24 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .text-blue-400,
+body.dark-mode .text-blue-500,
+body.dark-mode .text-green-400,
+body.dark-mode .text-amber-400,
+body.dark-mode .text-purple-400,
+body.dark-mode .text-\[#F5A623\],
+body.dark-mode .text-\[#3D2E5C\] {
+  color: #FF3B41 !important;
+}
+
+body.dark-mode .border-blue-500,
+body.dark-mode .border-green-500,
+body.dark-mode .border-amber-500,
+body.dark-mode .border-\[#F5A623\] {
+  border-color: #E31E24 !important;
+}
+
+
+/* ============================================
+   ULTRA-SPECIFIC OVERRIDES - CATCH ALL BLUES
+   ============================================ */
+
+/* Catch any remaining blue backgrounds */
+* [class*="bg-blue"],
+*[class*="bg-blue"],
+div[class*="bg-blue"],
+button[class*="bg-blue"],
+a[class*="bg-blue"],
+span[class*="bg-blue"] {
+  background-color: #E31E24 !important;
+}
+
+/* Catch any remaining blue text */
+* [class*="text-blue"],
+*[class*="text-blue"],
+div[class*="text-blue"],
+button[class*="text-blue"],
+a[class*="text-blue"],
+span[class*="text-blue"],
+p[class*="text-blue"] {
+  color: #E31E24 !important;
+}
+
+/* Catch any remaining blue borders */
+* [class*="border-blue"],
+*[class*="border-blue"],
+div[class*="border-blue"],
+button[class*="border-blue"],
+input[class*="border-blue"] {
+  border-color: #E31E24 !important;
+}
+
+/* Catch any remaining green colors */
+* [class*="bg-green"],
+*[class*="bg-green"],
+div[class*="bg-green"],
+button[class*="bg-green"] {
+  background-color: #E31E24 !important;
+}
+
+* [class*="text-green"],
+*[class*="text-green"],
+span[class*="text-green"] {
+  color: #E31E24 !important;
+}
+
+/* Catch any remaining amber/yellow colors */
+* [class*="bg-amber"],
+*[class*="bg-amber"],
+* [class*="bg-yellow"],
+*[class*="bg-yellow"],
+button[class*="bg-amber"],
+button[class*="bg-yellow"] {
+  background-color: #E31E24 !important;
+}
+
+* [class*="text-amber"],
+*[class*="text-amber"],
+* [class*="text-yellow"],
+*[class*="text-yellow"] {
+  color: #E31E24 !important;
+}
+
+/* Catch any remaining purple/indigo colors */
+* [class*="bg-purple"],
+*[class*="bg-purple"],
+* [class*="bg-indigo"],
+*[class*="bg-indigo"],
+button[class*="bg-purple"],
+button[class*="bg-indigo"] {
+  background-color: #E31E24 !important;
+}
+
+* [class*="text-purple"],
+*[class*="text-purple"],
+* [class*="text-indigo"],
+*[class*="text-indigo"] {
+  color: #E31E24 !important;
+}
+
+/* Ensure all colored buttons have white text */
+button[class*="bg-blue"],
+button[class*="bg-green"],
+button[class*="bg-amber"],
+button[class*="bg-purple"],
+button[class*="bg-indigo"],
+button[class*="bg-red"],
+a[class*="bg-blue"],
+a[class*="bg-green"],
+a[class*="bg-amber"] {
+  color: #ffffff !important;
+}
+
+/* Override any hover states */
+*:hover[class*="bg-blue"],
+*:hover[class*="bg-green"],
+*:hover[class*="bg-amber"],
+*:hover[class*="bg-purple"],
+button:hover[class*="bg-blue"],
+button:hover[class*="bg-green"],
+button:hover[class*="bg-amber"] {
+  background-color: #C41A1F !important;
+}
+
+/* Override focus states */
+*:focus[class*="border-blue"],
+*:focus[class*="border-green"],
+*:focus[class*="border-amber"],
+input:focus[class*="border-blue"],
+textarea:focus[class*="border-blue"] {
+  border-color: #E31E24 !important;
+  --tw-ring-color: rgba(227, 30, 36, 0.5) !important;
+}
+
+/* Override any ring colors */
+*[class*="ring-blue"],
+*[class*="ring-green"],
+*[class*="ring-amber"],
+*[class*="ring-purple"] {
+  --tw-ring-color: rgba(227, 30, 36, 0.5) !important;
+}
+
+
+/* ============================================
+   STRICT COLOR PALETTE - ONLY RED, WHITE, BLACK
+   ============================================ */
+
+/* Remove ALL blue colors */
+*[class*="blue"] {
+  color: inherit !important;
+}
+
+*[class*="bg-blue"] {
+  background-color: #E31E24 !important;
+}
+
+*[class*="text-blue"] {
+  color: #E31E24 !important;
+}
+
+*[class*="border-blue"] {
+  border-color: #E31E24 !important;
+}
+
+/* Remove ALL green colors */
+*[class*="bg-green"],
+*[class*="bg-emerald"],
+*[class*="bg-teal"],
+*[class*="bg-lime"] {
+  background-color: #E31E24 !important;
+}
+
+*[class*="text-green"],
+*[class*="text-emerald"],
+*[class*="text-teal"],
+*[class*="text-lime"] {
+  color: #E31E24 !important;
+}
+
+*[class*="border-green"],
+*[class*="border-emerald"],
+*[class*="border-teal"],
+*[class*="border-lime"] {
+  border-color: #E31E24 !important;
+}
+
+/* Remove ALL yellow/amber/orange colors */
+*[class*="bg-yellow"],
+*[class*="bg-amber"],
+*[class*="bg-orange"] {
+  background-color: #E31E24 !important;
+}
+
+*[class*="text-yellow"],
+*[class*="text-amber"],
+*[class*="text-orange"] {
+  color: #E31E24 !important;
+}
+
+*[class*="border-yellow"],
+*[class*="border-amber"],
+*[class*="border-orange"] {
+  border-color: #E31E24 !important;
+}
+
+/* Remove ALL purple/violet/indigo/pink colors */
+*[class*="bg-purple"],
+*[class*="bg-violet"],
+*[class*="bg-indigo"],
+*[class*="bg-pink"],
+*[class*="bg-fuchsia"] {
+  background-color: #E31E24 !important;
+}
+
+*[class*="text-purple"],
+*[class*="text-violet"],
+*[class*="text-indigo"],
+*[class*="text-pink"],
+*[class*="text-fuchsia"] {
+  color: #E31E24 !important;
+}
+
+*[class*="border-purple"],
+*[class*="border-violet"],
+*[class*="border-indigo"],
+*[class*="border-pink"],
+*[class*="border-fuchsia"] {
+  border-color: #E31E24 !important;
+}
+
+/* Remove ALL cyan/sky colors */
+*[class*="bg-cyan"],
+*[class*="bg-sky"] {
+  background-color: #E31E24 !important;
+}
+
+*[class*="text-cyan"],
+*[class*="text-sky"] {
+  color: #E31E24 !important;
+}
+
+*[class*="border-cyan"],
+*[class*="border-sky"] {
+  border-color: #E31E24 !important;
+}
+
+/* Keep only grayscale colors (slate, gray, zinc, neutral, stone) for backgrounds and text */
+/* These are allowed as they represent black/white spectrum */
+
+/* Override any remaining colored shadows */
+*[class*="shadow-blue"],
+*[class*="shadow-green"],
+*[class*="shadow-purple"],
+*[class*="shadow-pink"],
+*[class*="shadow-yellow"],
+*[class*="shadow-amber"],
+*[class*="shadow-orange"],
+*[class*="shadow-red"] {
+  --tw-shadow-color: rgba(227, 30, 36, 0.3) !important;
+}
+
+/* Override any colored rings */
+*[class*="ring-blue"],
+*[class*="ring-green"],
+*[class*="ring-purple"],
+*[class*="ring-pink"],
+*[class*="ring-yellow"],
+*[class*="ring-amber"],
+*[class*="ring-orange"],
+*[class*="ring-indigo"],
+*[class*="ring-violet"],
+*[class*="ring-cyan"],
+*[class*="ring-sky"],
+*[class*="ring-teal"],
+*[class*="ring-emerald"],
+*[class*="ring-lime"],
+*[class*="ring-fuchsia"] {
+  --tw-ring-color: rgba(227, 30, 36, 0.5) !important;
+}
+
+/* Override any colored divide borders */
+*[class*="divide-blue"],
+*[class*="divide-green"],
+*[class*="divide-purple"],
+*[class*="divide-pink"],
+*[class*="divide-yellow"],
+*[class*="divide-amber"],
+*[class*="divide-orange"] {
+  border-color: #E31E24 !important;
+}
+
+/* Override any colored placeholder text */
+*[class*="placeholder-blue"],
+*[class*="placeholder-green"],
+*[class*="placeholder-purple"],
+*[class*="placeholder-pink"],
+*[class*="placeholder-yellow"],
+*[class*="placeholder-amber"],
+*[class*="placeholder-orange"] {
+  --tw-placeholder-opacity: 1 !important;
+}
+
+*[class*="placeholder-blue"]::placeholder,
+*[class*="placeholder-green"]::placeholder,
+*[class*="placeholder-purple"]::placeholder,
+*[class*="placeholder-pink"]::placeholder,
+*[class*="placeholder-yellow"]::placeholder,
+*[class*="placeholder-amber"]::placeholder,
+*[class*="placeholder-orange"]::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Override any colored accent colors */
+*[class*="accent-blue"],
+*[class*="accent-green"],
+*[class*="accent-purple"],
+*[class*="accent-pink"],
+*[class*="accent-yellow"],
+*[class*="accent-amber"],
+*[class*="accent-orange"] {
+  accent-color: #E31E24 !important;
+}
+
+/* Override any colored caret */
+*[class*="caret-blue"],
+*[class*="caret-green"],
+*[class*="caret-purple"],
+*[class*="caret-pink"],
+*[class*="caret-yellow"],
+*[class*="caret-amber"],
+*[class*="caret-orange"] {
+  caret-color: #E31E24 !important;
+}
+
+/* Override any colored fills (for SVG) */
+*[class*="fill-blue"],
+*[class*="fill-green"],
+*[class*="fill-purple"],
+*[class*="fill-pink"],
+*[class*="fill-yellow"],
+*[class*="fill-amber"],
+*[class*="fill-orange"],
+*[class*="fill-indigo"],
+*[class*="fill-violet"],
+*[class*="fill-cyan"],
+*[class*="fill-sky"],
+*[class*="fill-teal"],
+*[class*="fill-emerald"],
+*[class*="fill-lime"],
+*[class*="fill-fuchsia"] {
+  fill: #E31E24 !important;
+}
+
+/* Override any colored strokes (for SVG) */
+*[class*="stroke-blue"],
+*[class*="stroke-green"],
+*[class*="stroke-purple"],
+*[class*="stroke-pink"],
+*[class*="stroke-yellow"],
+*[class*="stroke-amber"],
+*[class*="stroke-orange"],
+*[class*="stroke-indigo"],
+*[class*="stroke-violet"],
+*[class*="stroke-cyan"],
+*[class*="stroke-sky"],
+*[class*="stroke-teal"],
+*[class*="stroke-emerald"],
+*[class*="stroke-lime"],
+*[class*="stroke-fuchsia"] {
+  stroke: #E31E24 !important;
+}
+
+/* Override gradient colors */
+*[class*="from-blue"],
+*[class*="from-green"],
+*[class*="from-purple"],
+*[class*="from-pink"],
+*[class*="from-yellow"],
+*[class*="from-amber"],
+*[class*="from-orange"],
+*[class*="from-indigo"],
+*[class*="from-violet"],
+*[class*="from-cyan"],
+*[class*="from-sky"],
+*[class*="from-teal"],
+*[class*="from-emerald"],
+*[class*="from-lime"],
+*[class*="from-fuchsia"] {
+  --tw-gradient-from: #E31E24 !important;
+  --tw-gradient-to: rgb(227 30 36 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+*[class*="via-blue"],
+*[class*="via-green"],
+*[class*="via-purple"],
+*[class*="via-pink"],
+*[class*="via-yellow"],
+*[class*="via-amber"],
+*[class*="via-orange"],
+*[class*="via-indigo"],
+*[class*="via-violet"],
+*[class*="via-cyan"],
+*[class*="via-sky"],
+*[class*="via-teal"],
+*[class*="via-emerald"],
+*[class*="via-lime"],
+*[class*="via-fuchsia"] {
+  --tw-gradient-to: rgb(227 30 36 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #E31E24, var(--tw-gradient-to) !important;
+}
+
+*[class*="to-blue"],
+*[class*="to-green"],
+*[class*="to-purple"],
+*[class*="to-pink"],
+*[class*="to-yellow"],
+*[class*="to-amber"],
+*[class*="to-orange"],
+*[class*="to-indigo"],
+*[class*="to-violet"],
+*[class*="to-cyan"],
+*[class*="to-sky"],
+*[class*="to-teal"],
+*[class*="to-emerald"],
+*[class*="to-lime"],
+*[class*="to-fuchsia"] {
+  --tw-gradient-to: #2D2D2D !important;
+}
+
+/* Ensure all buttons with any color class use red */
+button[class*="blue"],
+button[class*="green"],
+button[class*="purple"],
+button[class*="pink"],
+button[class*="yellow"],
+button[class*="amber"],
+button[class*="orange"],
+button[class*="indigo"],
+button[class*="violet"],
+button[class*="cyan"],
+button[class*="sky"],
+button[class*="teal"],
+button[class*="emerald"],
+button[class*="lime"],
+button[class*="fuchsia"] {
+  background-color: #E31E24 !important;
+  color: #ffffff !important;
+}
+
+button[class*="blue"]:hover,
+button[class*="green"]:hover,
+button[class*="purple"]:hover,
+button[class*="pink"]:hover,
+button[class*="yellow"]:hover,
+button[class*="amber"]:hover,
+button[class*="orange"]:hover {
+  background-color: #C41A1F !important;
+}
+
+
+/* ============================================
+   ELIMINATE ALL GRAY TEXT COLORS
+   ============================================ */
+
+/* Light mode - replace all gray text with black */
+body:not(.dark-mode) *[class*="text-gray"],
+body:not(.dark-mode) *[class*="text-slate"],
+body:not(.dark-mode) *[class*="text-zinc"],
+body:not(.dark-mode) *[class*="text-neutral"],
+body:not(.dark-mode) *[class*="text-stone"] {
+  color: #000000 !important;
+}
+
+/* Dark mode - replace all gray text with white */
+body.dark-mode *[class*="text-gray"],
+body.dark-mode *[class*="text-slate"],
+body.dark-mode *[class*="text-zinc"],
+body.dark-mode *[class*="text-neutral"],
+body.dark-mode *[class*="text-stone"] {
+  color: #FFFFFF !important;
+}
+
+/* Specific gray text color overrides for light mode */
+body:not(.dark-mode) .text-gray-100,
+body:not(.dark-mode) .text-gray-200,
+body:not(.dark-mode) .text-gray-300,
+body:not(.dark-mode) .text-gray-400,
+body:not(.dark-mode) .text-gray-500,
+body:not(.dark-mode) .text-gray-600,
+body:not(.dark-mode) .text-gray-700,
+body:not(.dark-mode) .text-gray-800,
+body:not(.dark-mode) .text-gray-900,
+body:not(.dark-mode) .text-slate-100,
+body:not(.dark-mode) .text-slate-200,
+body:not(.dark-mode) .text-slate-300,
+body:not(.dark-mode) .text-slate-400,
+body:not(.dark-mode) .text-slate-500,
+body:not(.dark-mode) .text-slate-600,
+body:not(.dark-mode) .text-slate-700,
+body:not(.dark-mode) .text-slate-800,
+body:not(.dark-mode) .text-slate-900 {
+  color: #000000 !important;
+}
+
+/* Specific gray text color overrides for dark mode */
+body.dark-mode .text-gray-100,
+body.dark-mode .text-gray-200,
+body.dark-mode .text-gray-300,
+body.dark-mode .text-gray-400,
+body.dark-mode .text-gray-500,
+body.dark-mode .text-gray-600,
+body.dark-mode .text-gray-700,
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-900,
+body.dark-mode .text-slate-100,
+body.dark-mode .text-slate-200,
+body.dark-mode .text-slate-300,
+body.dark-mode .text-slate-400,
+body.dark-mode .text-slate-500,
+body.dark-mode .text-slate-600,
+body.dark-mode .text-slate-700,
+body.dark-mode .text-slate-800,
+body.dark-mode .text-slate-900 {
+  color: #FFFFFF !important;
+}
+
+/* Override placeholder text colors */
+body:not(.dark-mode) input::placeholder,
+body:not(.dark-mode) textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Override any muted text */
+body:not(.dark-mode) .text-muted,
+body:not(.dark-mode) [class*="text-"][class*="/60"],
+body:not(.dark-mode) [class*="text-"][class*="/70"],
+body:not(.dark-mode) [class*="text-"][class*="/80"] {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .text-muted,
+body.dark-mode [class*="text-"][class*="/60"],
+body.dark-mode [class*="text-"][class*="/70"],
+body.dark-mode [class*="text-"][class*="/80"] {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Override any secondary text */
+body:not(.dark-mode) .text-secondary {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+body.dark-mode .text-secondary {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Ensure all paragraph text is black/white */
+body:not(.dark-mode) p,
+body:not(.dark-mode) span,
+body:not(.dark-mode) div,
+body:not(.dark-mode) label {
+  color: inherit;
+}
+
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode div,
+body.dark-mode label {
+  color: inherit;
+}
+
+/* Override any remaining gray colors in specific elements */
+body:not(.dark-mode) h1, body:not(.dark-mode) h2, body:not(.dark-mode) h3,
+body:not(.dark-mode) h4, body:not(.dark-mode) h5, body:not(.dark-mode) h6 {
+  color: #000000 !important;
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+  color: #FFFFFF !important;
+}
+
+/* Override link colors when not red */
+body:not(.dark-mode) a:not([class*="bg-"]) {
+  color: #000000;
+}
+
+body.dark-mode a:not([class*="bg-"]) {
+  color: #FFFFFF;
+}
+
+body:not(.dark-mode) a:not([class*="bg-"]):hover {
+  color: #E31E24 !important;
+}
+
+body.dark-mode a:not([class*="bg-"]):hover {
+  color: #E31E24 !important;
+}
+
+
+/* ============================================
+   DARK MODE - REPLACE NAVY WITH BLACK
+   ============================================ */
+
+/* Replace all dark slate/navy backgrounds with pure black */
+body.dark-mode {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+body.dark-mode .bg-slate-950,
+body.dark-mode .bg-slate-900,
+body.dark-mode .bg-slate-800,
+body.dark-mode .bg-slate-700,
+body.dark-mode .bg-gray-900,
+body.dark-mode .bg-gray-800,
+body.dark-mode .bg-zinc-900,
+body.dark-mode .bg-neutral-900 {
+  background: #000000 !important;
+}
+
+/* Replace secondary backgrounds with very dark black */
+body.dark-mode .bg-slate-800\/50,
+body.dark-mode .bg-slate-900\/50 {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Card and container backgrounds in dark mode */
+body.dark-mode [class*="bg-slate"],
+body.dark-mode [class*="bg-gray"] {
+  background: #000000 !important;
+}
+
+/* Override any remaining navy/dark blue colors */
+body.dark-mode .bg-\[#0f172a\],
+body.dark-mode .bg-\[#1e293b\],
+body.dark-mode .bg-\[#334155\] {
+  background: #000000 !important;
+}
+
+/* Borders in dark mode - keep subtle white borders */
+body.dark-mode .border-slate-800,
+body.dark-mode .border-slate-700,
+body.dark-mode .border-slate-600,
+body.dark-mode .border-gray-800,
+body.dark-mode .border-gray-700 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Hover states in dark mode */
+body.dark-mode .hover\:bg-slate-800:hover,
+body.dark-mode .hover\:bg-slate-700:hover,
+body.dark-mode .hover\:bg-gray-800:hover {
+  background: #E31E24 !important;
+}
+
+/* Ensure main content area is black */
+body.dark-mode main,
+body.dark-mode .main-content {
+  background: #000000 !important;
+}
+
+/* Override any CSS variables for dark mode */
+body.dark-mode {
+  --bg-primary: #000000 !important;
+  --bg-secondary: #000000 !important;
+  --bg-tertiary: #000000 !important;
+}
+
+
+/* ============================================
+   LIGHT MODE - REPLACE GRAY WITH WHITE
+   ============================================ */
+
+/* Replace all gray backgrounds with pure white */
+body:not(.dark-mode) {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+body:not(.dark-mode) .bg-gray-50,
+body:not(.dark-mode) .bg-gray-100,
+body:not(.dark-mode) .bg-gray-200,
+body:not(.dark-mode) .bg-gray-300,
+body:not(.dark-mode) .bg-slate-50,
+body:not(.dark-mode) .bg-slate-100,
+body:not(.dark-mode) .bg-slate-200,
+body:not(.dark-mode) .bg-slate-300,
+body:not(.dark-mode) .bg-zinc-50,
+body:not(.dark-mode) .bg-zinc-100,
+body:not(.dark-mode) .bg-neutral-50,
+body:not(.dark-mode) .bg-neutral-100 {
+  background: #FFFFFF !important;
+}
+
+/* Replace secondary/tertiary backgrounds with white */
+body:not(.dark-mode) .bg-\[#f8fafc\],
+body:not(.dark-mode) .bg-\[#f1f5f9\],
+body:not(.dark-mode) .bg-\[#e2e8f0\] {
+  background: #FFFFFF !important;
+}
+
+/* Card and container backgrounds in light mode */
+body:not(.dark-mode) [class*="bg-gray"],
+body:not(.dark-mode) [class*="bg-slate"] {
+  background: #FFFFFF !important;
+}
+
+/* Borders in light mode - keep subtle black borders */
+body:not(.dark-mode) .border-gray-100,
+body:not(.dark-mode) .border-gray-200,
+body:not(.dark-mode) .border-gray-300,
+body:not(.dark-mode) .border-slate-100,
+body:not(.dark-mode) .border-slate-200,
+body:not(.dark-mode) .border-slate-300 {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hover states in light mode */
+body:not(.dark-mode) .hover\:bg-gray-50:hover,
+body:not(.dark-mode) .hover\:bg-gray-100:hover,
+body:not(.dark-mode) .hover\:bg-slate-50:hover,
+body:not(.dark-mode) .hover\:bg-slate-100:hover {
+  background: #E31E24 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure main content area is white */
+body:not(.dark-mode) main,
+body:not(.dark-mode) .main-content {
+  background: #FFFFFF !important;
+}
+
+/* Override any CSS variables for light mode */
+body:not(.dark-mode) {
+  --bg-primary: #FFFFFF !important;
+  --bg-secondary: #FFFFFF !important;
+  --bg-tertiary: #FFFFFF !important;
+  --text-primary: #000000 !important;
+  --text-secondary: #000000 !important;
+}
+
+/* Input and form backgrounds */
+body:not(.dark-mode) input,
+body:not(.dark-mode) textarea,
+body:not(.dark-mode) select {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+body:not(.dark-mode) input:focus,
+body:not(.dark-mode) textarea:focus,
+body:not(.dark-mode) select:focus {
+  background: #FFFFFF !important;
+  border-color: #E31E24 !important;
+}
+
+/* Remove any gray from cards, panels, sections */
+body:not(.dark-mode) .card,
+body:not(.dark-mode) .panel,
+body:not(.dark-mode) section,
+body:not(.dark-mode) article,
+body:not(.dark-mode) aside {
+  background: #FFFFFF !important;
+}
+
+/* Override any remaining gray hex colors */
+body:not(.dark-mode) .bg-\[#f3f4f6\],
+body:not(.dark-mode) .bg-\[#e5e7eb\],
+body:not(.dark-mode) .bg-\[#d1d5db\],
+body:not(.dark-mode) .bg-\[#9ca3af\] {
+  background: #FFFFFF !important;
+}
+
+
+/* ============================================
+   REMOVE BACKGROUND FROM COMMENT TEXT
+   ============================================ */
+
+/* Remove any background from comment text and containers */
+.comment,
+.comment-text,
+.comment-content,
+[class*="comment"] {
+  background: transparent !important;
+}
+
+/* Ensure comment text inherits theme colors */
+body:not(.dark-mode) .comment,
+body:not(.dark-mode) .comment-text,
+body:not(.dark-mode) .comment-content,
+body:not(.dark-mode) [class*="comment"] {
+  background: transparent !important;
+  color: #000000 !important;
+}
+
+body.dark-mode .comment,
+body.dark-mode .comment-text,
+body.dark-mode .comment-content,
+body.dark-mode [class*="comment"] {
+  background: transparent !important;
+  color: #FFFFFF !important;
+}
+
+/* Remove background from any text elements */
+p, span, div {
+  background: transparent;
+}
+
+/* Ensure code blocks and pre tags have no gray background */
+body:not(.dark-mode) code,
+body:not(.dark-mode) pre {
+  background: transparent !important;
+  color: #000000 !important;
+}
+
+body.dark-mode code,
+body.dark-mode pre {
+  background: transparent !important;
+  color: #FFFFFF !important;
+}
+
+
+/* ============================================
+   AGGRESSIVE BACKGROUND REMOVAL FOR ALL TEXT
+   ============================================ */
+
+/* Remove ALL backgrounds from text containers */
+* {
+  background-color: inherit;
+}
+
+/* Force transparent backgrounds on all text elements */
+p, span, div, a, label, h1, h2, h3, h4, h5, h6,
+li, ul, ol, blockquote, cite, em, strong, b, i,
+small, mark, del, ins, sub, sup, code, pre,
+textarea, input[type="text"], input[type="email"],
+input[type="password"], input[type="search"] {
+  background-color: transparent !important;
+}
+
+/* Remove backgrounds from specific utility classes */
+[class*="text-"],
+[class*="font-"],
+[class*="leading-"],
+[class*="tracking-"] {
+  background-color: transparent !important;
+}
+
+/* Ensure only specific background classes apply backgrounds */
+body:not(.dark-mode) *:not([class*="bg-"]):not(button):not(input):not(select):not(textarea) {
+  background-color: transparent !important;
+}
+
+body.dark-mode *:not([class*="bg-"]):not(button):not(input):not(select):not(textarea) {
+  background-color: transparent !important;
+}
+
+/* Override any inline styles */
+[style*="background"] {
+  background-color: transparent !important;
+}
+
+/* Remove backgrounds from flex and grid containers that don't explicitly set bg */
+.flex:not([class*="bg-"]),
+.grid:not([class*="bg-"]),
+.block:not([class*="bg-"]),
+.inline:not([class*="bg-"]),
+.inline-block:not([class*="bg-"]) {
+  background-color: transparent !important;
+}
+
+
+/* ============================================
+   APPLY THEME VARIABLES THROUGHOUT APP
+   Using centralized colors from theme-config.css
+   ============================================ */
+
+/* Apply primary color to all red elements */
+*[class*="bg-"][class*="E31E24"],
+.bg-primary,
+button.bg-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--btn-primary-text) !important;
+}
+
+/* Apply hover states */
+*[class*="hover"]:hover[class*="E31E24"],
+*[class*="hover"]:hover[class*="C41A1F"],
+button:hover.bg-primary {
+  background-color: var(--btn-primary-hover) !important;
+}
+
+/* Apply text colors based on theme */
+body:not(.dark-mode) {
+  color: var(--text-primary);
+}
+
+body.dark-mode {
+  color: var(--text-primary);
+}
+
+/* Apply border colors based on theme */
+body:not(.dark-mode) *[class*="border-"] {
+  border-color: var(--border-color);
+}
+
+body.dark-mode *[class*="border-"] {
+  border-color: var(--border-color);
+}
+
+/* Apply background colors based on theme */
+body:not(.dark-mode) {
+  background-color: var(--bg-primary);
+}
+
+body.dark-mode {
+  background-color: var(--bg-primary);
 }

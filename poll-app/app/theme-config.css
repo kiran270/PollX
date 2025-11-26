@@ -1,0 +1,109 @@
+/* ============================================
+   POLLMITRA THEME CONFIGURATION
+   Centralized color management for the entire app
+   ============================================ */
+
+:root {
+    /* ============================================
+     PRIMARY BRAND COLORS
+     ============================================ */
+    --color-primary: #E31E24;
+    /* Main red color */
+    --color-primary-dark: #C41A1F;
+    /* Darker red for hovers */
+    --color-primary-light: #FF3B41;
+    /* Lighter red for accents */
+
+    /* ============================================
+     LIGHT MODE COLORS
+     ============================================ */
+    --color-light-bg: #FFFFFF;
+    /* Light mode background */
+    --color-light-text: #000000;
+    /* Light mode text */
+    --color-light-border: rgba(0, 0, 0, 0.1);
+    /* Light mode borders */
+
+    /* ============================================
+     DARK MODE COLORS
+     ============================================ */
+    --color-dark-bg: #000000;
+    /* Dark mode background */
+    --color-dark-text: #FFFFFF;
+    /* Dark mode text */
+    --color-dark-border: rgba(255, 255, 255, 0.1);
+    /* Dark mode borders */
+
+    /* ============================================
+     SEMANTIC COLORS (Applied based on theme)
+     ============================================ */
+    --bg-primary: var(--color-light-bg);
+    --bg-secondary: var(--color-light-bg);
+    --bg-tertiary: var(--color-light-bg);
+    --text-primary: var(--color-light-text);
+    --text-secondary: var(--color-light-text);
+    --text-muted: rgba(0, 0, 0, 0.6);
+    --border-color: var(--color-light-border);
+
+    /* ============================================
+     BUTTON COLORS
+     ============================================ */
+    --btn-primary-bg: var(--color-primary);
+    --btn-primary-hover: var(--color-primary-dark);
+    --btn-primary-text: #FFFFFF;
+
+    /* ============================================
+     OPACITY VALUES
+     ============================================ */
+    --opacity-border: 0.1;
+    --opacity-muted: 0.6;
+    --opacity-disabled: 0.5;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+.dark,
+body.dark-mode {
+    --bg-primary: var(--color-dark-bg);
+    --bg-secondary: var(--color-dark-bg);
+    --bg-tertiary: var(--color-dark-bg);
+    --text-primary: var(--color-dark-text);
+    --text-secondary: var(--color-dark-text);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border-color: var(--color-dark-border);
+}
+
+/* ============================================
+   USAGE EXAMPLES & DOCUMENTATION
+   ============================================ */
+
+/*
+  HOW TO USE THESE VARIABLES:
+  
+  1. For backgrounds:
+     background-color: var(--bg-primary);
+     
+  2. For text:
+     color: var(--text-primary);
+     
+  3. For borders:
+     border-color: var(--border-color);
+     
+  4. For buttons:
+     background-color: var(--btn-primary-bg);
+     color: var(--btn-primary-text);
+     
+  5. For hover states:
+     background-color: var(--btn-primary-hover);
+     
+  6. For primary brand color:
+     color: var(--color-primary);
+     
+  TO CHANGE COLORS:
+  Simply update the values at the top of this file:
+  - Change --color-primary to change the main brand color
+  - Change --color-light-bg to change light mode background
+  - Change --color-dark-bg to change dark mode background
+  - All other colors will automatically update throughout the app
+*/
