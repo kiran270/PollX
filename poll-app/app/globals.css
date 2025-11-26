@@ -1479,51 +1479,27 @@ body.dark-mode pre {
 
 
 /* ============================================
-   AGGRESSIVE BACKGROUND REMOVAL FOR ALL TEXT
+   SELECTIVE BACKGROUND REMOVAL FOR TEXT ONLY
    ============================================ */
 
-/* Remove ALL backgrounds from text containers */
-* {
-  background-color: inherit;
-}
-
-/* Force transparent backgrounds on all text elements */
-p, span, div, a, label, h1, h2, h3, h4, h5, h6,
-li, ul, ol, blockquote, cite, em, strong, b, i,
-small, mark, del, ins, sub, sup, code, pre,
-textarea, input[type="text"], input[type="email"],
-input[type="password"], input[type="search"] {
+/* Force transparent backgrounds ONLY on text elements (not containers) */
+p, span, label, h1, h2, h3, h4, h5, h6,
+li, blockquote, cite, em, strong, b, i,
+small, mark, del, ins, sub, sup {
   background-color: transparent !important;
 }
 
-/* Remove backgrounds from specific utility classes */
-[class*="text-"],
-[class*="font-"],
-[class*="leading-"],
-[class*="tracking-"] {
+/* Keep backgrounds on structural elements that have bg- classes */
+/* This ensures navbar, cards, buttons, etc. keep their backgrounds */
+
+/* Remove backgrounds from text utility classes only */
+[class*="text-"]:not(div):not(section):not(nav):not(header):not(footer):not(aside):not(main) {
   background-color: transparent !important;
 }
 
-/* Ensure only specific background classes apply backgrounds */
-body:not(.dark-mode) *:not([class*="bg-"]):not(button):not(input):not(select):not(textarea) {
-  background-color: transparent !important;
-}
-
-body.dark-mode *:not([class*="bg-"]):not(button):not(input):not(select):not(textarea) {
-  background-color: transparent !important;
-}
-
-/* Override any inline styles */
-[style*="background"] {
-  background-color: transparent !important;
-}
-
-/* Remove backgrounds from flex and grid containers that don't explicitly set bg */
-.flex:not([class*="bg-"]),
-.grid:not([class*="bg-"]),
-.block:not([class*="bg-"]),
-.inline:not([class*="bg-"]),
-.inline-block:not([class*="bg-"]) {
+/* Ensure code blocks have no background */
+code:not([class*="bg-"]),
+pre:not([class*="bg-"]) {
   background-color: transparent !important;
 }
 
@@ -1573,4 +1549,68 @@ body:not(.dark-mode) {
 
 body.dark-mode {
   background-color: var(--bg-primary);
+}
+
+
+/* ============================================
+   FORCE SOLID BACKGROUNDS FOR NAVBAR AND CONTAINERS
+   ============================================ */
+
+/* Force navbar to have solid background */
+nav,
+[role="navigation"],
+.navbar,
+header {
+  background-color: inherit !important;
+}
+
+/* Light mode - force white backgrounds */
+body:not(.dark-mode) nav,
+body:not(.dark-mode) [role="navigation"],
+body:not(.dark-mode) header,
+body:not(.dark-mode) .bg-white {
+  background-color: #FFFFFF !important;
+}
+
+/* Dark mode - force black backgrounds */
+body.dark-mode nav,
+body.dark-mode [role="navigation"],
+body.dark-mode header,
+body.dark-mode .bg-black {
+  background-color: #000000 !important;
+}
+
+/* Ensure divs with bg- classes keep their backgrounds */
+div[class*="bg-"],
+section[class*="bg-"],
+aside[class*="bg-"],
+main[class*="bg-"] {
+  background-color: inherit !important;
+}
+
+/* Specifically target the sidebar/navbar */
+.fixed[class*="bg-"],
+.sticky[class*="bg-"] {
+  background-color: inherit !important;
+}
+
+/* Override any transparent backgrounds on structural elements */
+body:not(.dark-mode) div.bg-white,
+body:not(.dark-mode) div.bg-\[#FFFFFF\],
+body:not(.dark-mode) div.bg-\[#ffffff\] {
+  background-color: #FFFFFF !important;
+}
+
+body.dark-mode div.bg-black,
+body.dark-mode div.bg-\[#000000\],
+body.dark-mode div.bg-\[#000\] {
+  background-color: #000000 !important;
+}
+
+/* Ensure cards and panels have backgrounds */
+.card,
+.panel,
+[class*="card"],
+[class*="panel"] {
+  background-color: inherit !important;
 }
