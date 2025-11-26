@@ -51,6 +51,7 @@ export default function AnalyticsPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [showUsers, setShowUsers] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     if (status === "loading") return
@@ -65,13 +66,11 @@ export default function AnalyticsPage() {
       return
     }
 
-    Promise.all([
-      fetch("/api/admin/analytics").then((res) => res.json()),
-      fetch("/api/admin/users").then((res) => res.json()),
-    ])
-      .then(([analyticsData, usersData]) => {
+    // Only load analytics initially, not users
+    fetch("/api/admin/analytics")
+      .then((res) => res.json())
+      .then((analyticsData) => {
         setAnalytics(analyticsData)
-        setUsers(usersData)
         setLoading(false)
       })
       .catch((error) => {
@@ -79,6 +78,20 @@ export default function AnalyticsPage() {
         setLoading(false)
       })
   }, [session, status, router])
+
+  // Load users only when user section is expanded
+  useEffect(() => {
+    if (showUsers && users.length === 0) {
+      fetch("/api/admin/users")
+        .then((res) => res.json())
+        .then((usersData) => {
+          setUsers(usersData)
+        })
+        .catch((error) => {
+          console.error("Failed to load users:", error)
+        })
+    }
+  }, [showUsers])
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     if (!confirm(`Change user role to ${newRole}?`)) return
@@ -296,6 +309,22 @@ export default function AnalyticsPage() {
 
           {showUsers && (
             <div className="mt-4 bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+              {/* Search Bar */}
+              <div className="p-4 border-b border-slate-800">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search users by name or email..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 pl-10 bg-slate-800 border border-slate-700 rounded-lg focus:border-blue-500 focus:outline-none text-white text-sm"
+                  />
+                  <svg className="w-5 h-5 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              
               {/* Desktop Table View */}
               <div className="hidden lg:block overflow-x-auto">
                 <table className="w-full">
@@ -322,7 +351,12 @@ export default function AnalyticsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
-                    {users.map((user) => (
+                    {users
+                      .filter(user => 
+                        user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .map((user) => (
                       <tr
                         key={user.id}
                         className="hover:bg-slate-800/30 transition-colors"
@@ -397,7 +431,12 @@ export default function AnalyticsPage() {
 
               {/* Mobile Card View */}
               <div className="lg:hidden divide-y divide-slate-800">
-                {users.map((user) => (
+                {users
+                  .filter(user => 
+                    user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .map((user) => (
                   <div key={user.id} className="p-4 space-y-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
