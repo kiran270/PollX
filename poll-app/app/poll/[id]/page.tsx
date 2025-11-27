@@ -261,7 +261,9 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="space-y-3 mb-4">
-            {poll.options.map((option: any) => {
+            {poll.options
+              .sort((a: any, b: any) => b._count.votes - a._count.votes)
+              .map((option: any) => {
               const voteCount = option._count.votes
               const percentage = getPercentage(voteCount)
               const isSelected = selectedOption === option.id
