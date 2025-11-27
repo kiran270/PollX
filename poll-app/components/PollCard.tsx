@@ -309,7 +309,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
           return (
             <div key={option.id} className="relative">
               {isLeading && totalVotes > 0 && (
-                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 shadow-lg">
+                <div className="absolute -top-1 -right-1 bg-[#E31E24] text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 shadow-lg">
                   Leading
                 </div>
               )}
@@ -324,15 +324,18 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
                   className="sr-only"
                 />
 
-                <div className={`relative overflow-hidden rounded-lg border transition-all ${
-                  isUserVoted
-                    ? "border-green-500 bg-green-500/10"
-                    : isSelected
-                    ? "border-blue-500 bg-blue-500/10"
-                    : "border-slate-700 hover:border-slate-600 bg-slate-800/50"
-                  }`}>
+                <div 
+                  className={`relative overflow-hidden rounded-lg transition-all bg-slate-800/50 ${
+                    isUserVoted
+                      ? "border-2"
+                      : isSelected
+                      ? "border border-blue-500 bg-blue-500/10"
+                      : "border border-slate-700 hover:border-slate-600"
+                  }`}
+                  style={isUserVoted ? { borderColor: '#E31E24' } : {}}
+                >
                   <div
-                    className="absolute inset-y-0 left-0 bg-red-500 opacity-40 transition-all duration-500 z-0"
+                    className="absolute inset-y-0 left-0 bg-[#E31E24] opacity-40 transition-all duration-500 z-0"
                     style={{ width: `${percentage}%` }}
                   />
 
@@ -347,7 +350,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
                       )}
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                         isUserVoted
-                          ? "border-red-500 bg-red-500"
+                          ? "border-[#E31E24] bg-[#E31E24]"
                           : isSelected
                           ? "border-blue-500 bg-blue-500"
                           : "border-slate-600 bg-transparent"
