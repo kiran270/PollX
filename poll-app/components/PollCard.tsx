@@ -41,6 +41,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   const [poll, setPoll] = useState<Poll>(initialPoll)
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [hasVoted, setHasVoted] = useState(false)
+  const [userVotedOption, setUserVotedOption] = useState<string>("")
   const [timeRemaining, setTimeRemaining] = useState("")
   const [isExpired, setIsExpired] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
@@ -54,6 +55,9 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
           if (response.ok) {
             const data = await response.json()
             setHasVoted(data.hasVoted)
+            if (data.hasVoted && data.optionId) {
+              setUserVotedOption(data.optionId)
+            }
           }
         } catch (error) {
           console.error("Failed to check vote status:", error)
@@ -293,20 +297,22 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
       </div>
 
       <div className="space-y-2.5 mb-5">
-        {poll.options.map((option) => {
+        {poll.options
+          .sort((a, b) => b._count.votes - a._count.votes)
+          .map((option) => {
           const voteCount = option._count.votes
           const percentage = getPercentage(voteCount)
           const isSelected = selectedOption === option.id
           const isLeading = option.id === leadingOptionId && totalVotes > 0
+          const isUserVoted = hasVoted && userVotedOption === option.id
 
           return (
             <div key={option.id} className="relative">
               {isLeading && totalVotes > 0 && (
-                <div className="absolute -top-1 -right-1 bg-amber-500 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-md z-10">
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 shadow-lg">
                   Leading
                 </div>
               )}
-
               <label className={`relative block cursor-pointer ${hasVoted || isExpired ? "cursor-not-allowed" : ""}`}>
                 <input
                   type="radio"
@@ -318,12 +324,15 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
                   className="sr-only"
                 />
 
-                <div className={`relative overflow-hidden rounded-lg border transition-all ${isSelected
-                  ? "border-blue-500 bg-blue-500/10"
-                  : "border-slate-700 hover:border-slate-600 bg-slate-800/50"
+                <div className={`relative overflow-hidden rounded-lg border transition-all ${
+                  isUserVoted
+                    ? "border-green-500 bg-green-500/10"
+                    : isSelected
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-slate-700 hover:border-slate-600 bg-slate-800/50"
                   }`}>
                   <div
-                    className="absolute inset-0 bg-blue-500/10 transition-all duration-500"
+                    className="absolute inset-y-0 left-0 bg-red-500 opacity-40 transition-all duration-500 z-0"
                     style={{ width: `${percentage}%` }}
                   />
 
@@ -336,11 +345,14 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
                           className="w-12 h-12 object-cover rounded border border-slate-700"
                         />
                       )}
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected
-                        ? "border-blue-500 bg-blue-500"
-                        : "border-slate-600 bg-transparent"
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                        isUserVoted
+                          ? "border-red-500 bg-red-500"
+                          : isSelected
+                          ? "border-blue-500 bg-blue-500"
+                          : "border-slate-600 bg-transparent"
                         }`}>
-                        {isSelected && (
+                        {(isSelected || isUserVoted) && (
                           <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
