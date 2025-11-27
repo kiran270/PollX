@@ -1614,3 +1614,72 @@ body.dark-mode div.bg-\[#000\] {
 [class*="panel"] {
   background-color: inherit !important;
 }
+
+
+/* ============================================
+   DATETIME PICKER STYLING FOR DARK MODE
+   ============================================ */
+
+/* Style the datetime picker input */
+body.dark-mode input[type="datetime-local"] {
+  color-scheme: dark !important;
+  color: #ffffff !important;
+}
+
+body:not(.dark-mode) input[type="datetime-local"] {
+  color-scheme: light !important;
+  color: #000000 !important;
+}
+
+/* Style the calendar icon/button - Dark mode - Chrome/Safari */
+body.dark-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 4px !important;
+  padding: 4px !important;
+}
+
+body.dark-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(1) brightness(1.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Style the calendar icon/button - Light mode - Chrome/Safari */
+body:not(.dark-mode) input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+
+/* Firefox datetime picker - Dark mode */
+body.dark-mode input[type="datetime-local"]::-moz-calendar-picker-indicator {
+  filter: invert(1) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 4px !important;
+  padding: 4px !important;
+}
+
+body.dark-mode input[type="datetime-local"]::-moz-calendar-picker-indicator:hover {
+  filter: invert(1) brightness(1.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Firefox datetime picker - Light mode */
+body:not(.dark-mode) input[type="datetime-local"]::-moz-calendar-picker-indicator {
+  filter: invert(0) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+
+/* Edge datetime picker - Dark mode */
+body.dark-mode input[type="datetime-local"]::-ms-clear {
+  filter: invert(1) !important;
+}
+
+body.dark-mode input[type="datetime-local"]::-ms-reveal {
+  filter: invert(1) !important;
+}

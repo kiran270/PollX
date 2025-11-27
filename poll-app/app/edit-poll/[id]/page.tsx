@@ -12,7 +12,7 @@ export default function EditPollPage() {
 
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [expiresIn, setExpiresIn] = useState("24")
+  const [expiresIn, setExpiresIn] = useState("")
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [poll, setPoll] = useState<any>(null)
@@ -48,11 +48,9 @@ export default function EditPollPage() {
           votes: opt._count.votes,
         })))
         
-        // Calculate hours until expiration
-        const now = new Date()
+        // Set expiry date
         const expires = new Date(pollData.expiresAt)
-        const hoursLeft = Math.max(1, Math.round((expires.getTime() - now.getTime()) / (1000 * 60 * 60)))
-        setExpiresIn(hoursLeft.toString())
+        setExpiresIn(expires.toISOString().slice(0, 16))
         setLoading(false)
       })
       .catch((error) => {
@@ -98,8 +96,7 @@ export default function EditPollPage() {
 
     setSaving(true)
 
-    const expiresAt = new Date()
-    expiresAt.setHours(expiresAt.getHours() + parseInt(expiresIn))
+    const expiresAt = new Date(expiresIn)
 
     try {
       const response = await fetch(`/api/polls/${pollId}`, {
@@ -275,24 +272,17 @@ export default function EditPollPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-3">
-              Extend Poll Duration (hours from now)
+              Poll Expiry Date & Time
             </label>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-              {[1, 6, 12, 24, 48, 72].map((hours) => (
-                <button
-                  key={hours}
-                  type="button"
-                  onClick={() => setExpiresIn(hours.toString())}
-                  className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
-                    expiresIn === hours.toString()
-                      ? "bg-blue-600 text-white"
-                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
-                >
-                  {hours}h
-                </button>
-              ))}
-            </div>
+            <input
+              type="datetime-local"
+              value={expiresIn}
+              onChange={(e) => setExpiresIn(e.target.value)}
+              min={new Date().toISOString().slice(0, 16)}
+              required
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-blue-500 focus:outline-none text-white transition-colors"
+              style={{ colorScheme: 'dark' }}
+            />
           </div>
 
           <div className="pt-4 flex flex-col sm:flex-row gap-3">
