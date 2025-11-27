@@ -11,7 +11,11 @@ export default function Page() {
   const [description, setDescription] = useState("")
   const [pollImage, setPollImage] = useState("")
   const [options, setOptions] = useState([{ text: "", image: "" }, { text: "", image: "" }])
-  const [expiresIn, setExpiresIn] = useState("24")
+  const [expiresIn, setExpiresIn] = useState(() => {
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    return tomorrow.toISOString().slice(0, 16)
+  })
   const [category, setCategory] = useState("")
   const [isPublic, setIsPublic] = useState(true)
   const [allowVoteChange, setAllowVoteChange] = useState(false)
@@ -72,8 +76,7 @@ export default function Page() {
       return
     }
 
-    const expiresAt = new Date()
-    expiresAt.setHours(expiresAt.getHours() + parseInt(expiresIn))
+    const expiresAt = new Date(expiresIn)
 
     try {
       const pollData = {
@@ -321,24 +324,17 @@ export default function Page() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-3">
-              Poll Duration
+              Poll Expiry Date & Time
             </label>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-              {[1, 6, 12, 24, 48, 72].map((hours) => (
-                <button
-                  key={hours}
-                  type="button"
-                  onClick={() => setExpiresIn(hours.toString())}
-                  className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
-                    expiresIn === hours.toString()
-                      ? "bg-blue-600 text-white"
-                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                  }`}
-                >
-                  {hours}h
-                </button>
-              ))}
-            </div>
+            <input
+              type="datetime-local"
+              value={expiresIn}
+              onChange={(e) => setExpiresIn(e.target.value)}
+              min={new Date().toISOString().slice(0, 16)}
+              required
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:border-blue-500 focus:outline-none text-white transition-colors"
+              style={{ colorScheme: 'dark' }}
+            />
           </div>
 
           <div className="pt-4 flex flex-col sm:flex-row gap-3">
