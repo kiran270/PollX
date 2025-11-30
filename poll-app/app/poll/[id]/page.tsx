@@ -40,15 +40,13 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
       const data = await res.json()
       setPoll(data)
       
-      if (session?.user?.id) {
-        // Check vote status via API
-        const voteRes = await fetch(`/api/polls/${id}/vote`)
-        const voteData = await voteRes.json()
-        setHasVoted(voteData.hasVoted)
-        
-        if (voteData.hasVoted && voteData.optionId) {
-          setUserVote(voteData.optionId)
-        }
+      // Check vote status for both authenticated and anonymous users
+      const voteRes = await fetch(`/api/polls/${id}/vote`)
+      const voteData = await voteRes.json()
+      setHasVoted(voteData.hasVoted)
+      
+      if (voteData.hasVoted && voteData.optionId) {
+        setUserVote(voteData.optionId)
       }
     } catch (error) {
       console.error("Failed to fetch poll:", error)
@@ -299,7 +297,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
             })}
           </div>
 
-          {!hasVoted && !isExpired && session && (
+          {!hasVoted && !isExpired && (
             <button
               onClick={handleVote}
               disabled={!selectedOption}
@@ -309,14 +307,26 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
             </button>
           )}
 
+          {hasVoted && !isExpired && (
+            <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-center">
+              <span className="text-green-400 font-medium text-sm">✓ Vote submitted</span>
+            </div>
+          )}
+
           {hasVoted && poll.allowVoteChange && !isExpired && (
             <button
               onClick={handleVote}
               disabled={!selectedOption || selectedOption === userVote}
-              className="w-full px-5 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed transition-colors"
+              className="w-full px-5 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed transition-colors mt-2"
             >
               Change Vote
             </button>
+          )}
+
+          {isExpired && (
+            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-center">
+              <span className="text-red-400 font-medium text-sm">Poll has expired</span>
+            </div>
           )}
 
           <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-sm text-slate-400">

@@ -177,8 +177,8 @@ export default function AdminPage() {
                   type="button"
                   onClick={() => setExpiresIn(hours.toString())}
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${expiresIn === hours.toString()
-                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                 >
                   {hours}h
