@@ -35,7 +35,7 @@ export default function Page() {
 
   if (loading || status === "loading") {
     return (
-      <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
+      <div className="lg:ml-56 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-slate-700 border-t-blue-500 mb-4"></div>
           <p className="text-slate-400">Loading...</p>
@@ -46,7 +46,7 @@ export default function Page() {
 
   if (!session) {
     return (
-      <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
+      <div className="lg:ml-56 min-h-screen bg-slate-950 flex items-center justify-center pt-16 lg:pt-0">
         <div className="text-center max-w-md bg-slate-900 rounded-xl p-12 border border-slate-800">
           <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <span className="text-4xl">🔒</span>
@@ -59,7 +59,7 @@ export default function Page() {
   }
 
   return (
-    <div className="lg:ml-64 min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 grid-bg">
+    <div className="lg:ml-56 min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 grid-bg">
       <div className="max-w-7xl mx-auto">
         {polls.length === 0 ? (
           <div className="flex items-center justify-center py-20">

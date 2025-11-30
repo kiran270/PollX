@@ -49,23 +49,21 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
   // Check if user has already voted - need to fetch from API
   useEffect(() => {
     const checkVoteStatus = async () => {
-      if (session?.user?.id) {
-        try {
-          const response = await fetch(`/api/polls/${poll.id}/vote`)
-          if (response.ok) {
-            const data = await response.json()
-            setHasVoted(data.hasVoted)
-            if (data.hasVoted && data.optionId) {
-              setUserVotedOption(data.optionId)
-            }
+      try {
+        const response = await fetch(`/api/polls/${poll.id}/vote`)
+        if (response.ok) {
+          const data = await response.json()
+          setHasVoted(data.hasVoted)
+          if (data.hasVoted && data.optionId) {
+            setUserVotedOption(data.optionId)
           }
-        } catch (error) {
-          console.error("Failed to check vote status:", error)
         }
+      } catch (error) {
+        console.error("Failed to check vote status:", error)
       }
     }
     checkVoteStatus()
-  }, [session, poll.id])
+  }, [poll.id])
 
   useEffect(() => {
     const updateTimer = () => {
@@ -110,6 +108,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
 
       if (response.ok) {
         setHasVoted(true)
+        setUserVotedOption(selectedOption)
         
         // Fetch updated poll data to show new vote counts
         const pollResponse = await fetch(`/api/polls/${poll.id}`)

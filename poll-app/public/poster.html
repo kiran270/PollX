@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PollMitra - Your Voice Matters</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 500px;
+            height: 700px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            border-radius: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 0 30px 60px rgba(227, 30, 36, 0.3);
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #E31E24 0%, #C41A1F 100%);
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 20px 25px 30px;
+            color: white;
+        }
+
+        .main-text {
+            font-size: 26px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 0%, #E31E24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(227, 30, 36, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #E31E24;
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            background: rgba(227, 30, 36, 0.2);
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            min-width: 30px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(227, 30, 36, 0.2) 0%, rgba(227, 30, 36, 0.05) 100%);
+            border-radius: 12px;
+            border: 2px solid rgba(227, 30, 36, 0.3);
+        }
+
+        .cta-text {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #E31E24;
+        }
+
+        .website {
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+            background: #E31E24;
+            padding: 14px 28px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(227, 30, 36, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(227, 30, 36, 0.3) 0%, transparent 70%);
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 100px;
+            left: -50px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .poster {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="poster">
+        <div class="decorative-circle circle-1"></div>
+        <div class="decorative-circle circle-2"></div>
+
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-image">
+                    <img src="logo.jpeg" alt="PollMitra Logo">
+                </div>
+            </div>
+            <div class="tagline">Your Voice Matters</div>
+        </div>
+
+        <div class="content">
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🗳️</div>
+                    <div class="feature-text">Create Polls in Seconds</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">Real-Time Results</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">Engage with Comments</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-text">Beautiful Dark/Light Themes</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">Mobile Friendly</div>
+                </div>
+
+            </div>
+
+            <div class="cta-section">
+                <div class="website">www.pollmitra.com</div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
