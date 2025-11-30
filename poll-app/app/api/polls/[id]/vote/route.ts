@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
+import { getClientIp } from "@/lib/ip"
 
 export async function GET(
   request: Request,
@@ -9,19 +10,33 @@ export async function GET(
   try {
     const session = await auth()
     const { id: pollId } = await params
+    const ipAddress = await getClientIp()
     
-    if (!session?.user) {
-      return NextResponse.json({ hasVoted: false })
-    }
+    let existingVote = null
 
-    const existingVote = await prisma.vote.findUnique({
-      where: {
-        userId_pollId: {
-          userId: session.user.id,
-          pollId,
+    // Check if user is signed in
+    if (session?.user) {
+      existingVote = await prisma.vote.findUnique({
+        where: {
+          userId_pollId: {
+            userId: session.user.id,
+            pollId,
+          },
         },
-      },
-    })
+      })
+    }
+    
+    // If no user vote found, check by IP
+    if (!existingVote && ipAddress !== 'unknown') {
+      existingVote = await prisma.vote.findUnique({
+        where: {
+          ipAddress_pollId: {
+            ipAddress,
+            pollId,
+          },
+        },
+      })
+    }
 
     return NextResponse.json({ 
       hasVoted: !!existingVote,
@@ -40,10 +55,7 @@ export async function POST(
   try {
     const session = await auth()
     const { id: pollId } = await params
-    
-    if (!session?.user) {
-      return NextResponse.json({ error: "Please sign in to vote" }, { status: 401 })
-    }
+    const ipAddress = await getClientIp()
 
     const body = await request.json()
     const { optionId } = body
@@ -61,15 +73,29 @@ export async function POST(
       return NextResponse.json({ error: "Poll has expired" }, { status: 400 })
     }
 
-    // Check if user already voted
-    const existingVote = await prisma.vote.findUnique({
-      where: {
-        userId_pollId: {
-          userId: session.user.id,
-          pollId,
+    let existingVote = null
+
+    // Check if user already voted (prioritize user ID if signed in)
+    if (session?.user) {
+      existingVote = await prisma.vote.findUnique({
+        where: {
+          userId_pollId: {
+            userId: session.user.id,
+            pollId,
+          },
         },
-      },
-    })
+      })
+    } else if (ipAddress !== 'unknown') {
+      // Check by IP if not signed in
+      existingVote = await prisma.vote.findUnique({
+        where: {
+          ipAddress_pollId: {
+            ipAddress,
+            pollId,
+          },
+        },
+      })
+    }
 
     if (existingVote) {
       // If vote change is allowed, update the vote
@@ -84,10 +110,11 @@ export async function POST(
       }
     }
 
-    // Create new vote
+    // Create new vote (with user ID if signed in, otherwise with IP)
     const vote = await prisma.vote.create({
       data: {
-        userId: session.user.id,
+        userId: session?.user?.id || null,
+        ipAddress: !session?.user ? ipAddress : null,
         pollId,
         optionId,
       },

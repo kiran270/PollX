@@ -113,7 +113,7 @@ export async function GET() {
       })),
       recentActivity: recentVotes.map(vote => ({
         id: vote.id,
-        userName: vote.user.name,
+        userName: vote.user?.name || 'Anonymous',
         pollTitle: vote.poll.title,
         optionText: vote.option.text,
         createdAt: vote.createdAt,

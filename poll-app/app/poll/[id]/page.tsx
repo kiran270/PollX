@@ -141,7 +141,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
 
   if (loading) {
     return (
-      <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="lg:ml-56 min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-slate-700 border-t-blue-500 mb-4"></div>
           <p className="text-slate-400">Loading...</p>
@@ -152,7 +152,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
 
   if (!poll) {
     return (
-      <div className="lg:ml-64 min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="lg:ml-56 min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <p className="text-slate-400">Poll not found</p>
         </div>
@@ -177,7 +177,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
         <meta name="twitter:title" content={poll.title} />
         <meta name="twitter:description" content={poll.description || `Vote on: ${poll.title}`} />
       </Head>
-      <div className="lg:ml-64 min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
+      <div className="lg:ml-56 min-h-screen bg-slate-950 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
         <div className="max-w-4xl mx-auto">
         <button
           onClick={() => router.back()}
