@@ -26,6 +26,7 @@ interface Poll {
   description: string | null
   imageUrl: string | null
   category: string | null
+  isPublic: boolean
   expiresAt: string
   userId: string
   options: Option[]
@@ -232,9 +233,19 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
       )}
       <div className="flex items-start justify-between mb-5">
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-white mb-1 hover:text-blue-400 cursor-pointer" onClick={() => router.push(`/poll/${poll.id}`)}>
-            {poll.title}
-          </h3>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-lg font-bold text-white hover:text-blue-400 cursor-pointer" onClick={() => router.push(`/poll/${poll.id}`)}>
+              {poll.title}
+            </h3>
+            {!poll.isPublic && (
+              <span className="px-2 py-0.5 bg-amber-500/10 text-amber-400 text-xs font-medium rounded border border-amber-500/20 flex items-center gap-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                </svg>
+                Private
+              </span>
+            )}
+          </div>
           {poll.description && (
             <p className="text-sm text-slate-400">{poll.description}</p>
           )}

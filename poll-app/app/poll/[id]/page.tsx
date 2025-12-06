@@ -190,7 +190,17 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
         <div className="bg-slate-900 rounded-xl p-6 border border-slate-800 mb-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-white mb-2">{poll.title}</h1>
+              <div className="flex items-center gap-2 mb-2">
+                <h1 className="text-2xl font-bold text-white">{poll.title}</h1>
+                {!poll.isPublic && (
+                  <span className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs font-medium rounded border border-amber-500/20 flex items-center gap-1">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                    </svg>
+                    Private
+                  </span>
+                )}
+              </div>
               {poll.description && (
                 <p className="text-slate-400">{poll.description}</p>
               )}
