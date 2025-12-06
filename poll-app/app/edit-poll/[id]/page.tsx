@@ -18,6 +18,7 @@ export default function EditPollPage() {
   const [poll, setPoll] = useState<any>(null)
   const [options, setOptions] = useState<Array<{ id?: string; text: string; votes?: number; isNew?: boolean }>>([])
   const [deletedOptionIds, setDeletedOptionIds] = useState<string[]>([])
+  const [isPublic, setIsPublic] = useState(true)
 
   useEffect(() => {
     if (status === "loading") return
@@ -42,6 +43,7 @@ export default function EditPollPage() {
         setPoll(pollData)
         setTitle(pollData.title)
         setDescription(pollData.description || "")
+        setIsPublic(pollData.isPublic !== undefined ? pollData.isPublic : true)
         setOptions(pollData.options.map((opt: any) => ({
           id: opt.id,
           text: opt.text,
@@ -105,6 +107,7 @@ export default function EditPollPage() {
         body: JSON.stringify({
           title,
           description,
+          isPublic,
           expiresAt: expiresAt.toISOString(),
           options: validOptions.map(opt => ({
             id: opt.id,
@@ -268,6 +271,32 @@ export default function EditPollPage() {
                 ⚠️ {deletedOptionIds.length} option(s) will be deleted (including their votes)
               </p>
             )}
+          </div>
+
+          <div className="flex items-center justify-between p-4 bg-slate-800 rounded-lg">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">
+                {isPublic ? "Public Poll" : "Private Poll"}
+              </label>
+              <p className="text-xs text-slate-500">
+                {isPublic 
+                  ? "Visible in listings and anyone can view and vote" 
+                  : "Only accessible via direct link - not shown in public listings"}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsPublic(!isPublic)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                isPublic ? "bg-blue-600" : "bg-amber-600"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isPublic ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
           </div>
 
           <div>

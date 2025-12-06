@@ -9,6 +9,7 @@ export async function GET(
 ) {
   try {
     const { id: pollId } = await params
+    const session = await auth()
 
     const poll = await prisma.poll.findUnique({
       where: { id: pollId },
@@ -41,6 +42,8 @@ export async function GET(
       return NextResponse.json({ error: "Poll not found" }, { status: 404 })
     }
 
+    // Private polls are accessible via direct link to anyone
+    // No additional access control needed - if you have the link, you can view it
     return NextResponse.json(poll)
   } catch (error) {
     console.error("Get poll error:", error)
@@ -128,7 +131,7 @@ export async function PATCH(
 
     const { id: pollId } = await params
     const body = await request.json()
-    const { title, description, expiresAt, options, deletedOptionIds } = body
+    const { title, description, isPublic, expiresAt, options, deletedOptionIds } = body
 
     if (!pollId || typeof pollId !== 'string') {
       return NextResponse.json({ error: "Invalid poll ID" }, { status: 400 })
@@ -188,6 +191,7 @@ export async function PATCH(
       data: {
         title,
         description,
+        isPublic: isPublic !== undefined ? isPublic : undefined,
         expiresAt: expiresAt ? new Date(expiresAt) : undefined,
       },
       include: {

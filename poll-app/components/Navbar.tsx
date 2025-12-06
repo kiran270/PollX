@@ -150,18 +150,33 @@ export default function Navbar() {
           </Link>
 
           {session && (
-            <Link
-              href="/create-poll"
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/create-poll"
-                ? "bg-[#E31E24] text-white"
-                : `${textClass} ${hoverTextClass}`
-                }`}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-              </svg>
-              Create Poll
-            </Link>
+            <>
+              <Link
+                href="/my-polls"
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/my-polls"
+                  ? "bg-[#E31E24] text-white"
+                  : `${textClass} ${hoverTextClass}`
+                  }`}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+                My Polls
+              </Link>
+
+              <Link
+                href="/create-poll"
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${pathname === "/create-poll"
+                  ? "bg-[#E31E24] text-white"
+                  : `${textClass} ${hoverTextClass}`
+                  }`}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Create Poll
+              </Link>
+            </>
           )}
 
           {session && isAdmin && (

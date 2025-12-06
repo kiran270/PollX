@@ -102,6 +102,28 @@ export default function Page() {
       })
 
       if (response.ok) {
+        const createdPoll = await response.json()
+        
+        // If it's a private poll, show the share link
+        if (!isPublic) {
+          const pollUrl = `${window.location.origin}/poll/${createdPoll.id}`
+          const shouldCopy = confirm(
+            `✅ Private poll created!\n\n` +
+            `This poll is only accessible via direct link.\n\n` +
+            `Share this link:\n${pollUrl}\n\n` +
+            `Click OK to copy the link to clipboard.`
+          )
+          
+          if (shouldCopy) {
+            try {
+              await navigator.clipboard.writeText(pollUrl)
+              alert("Link copied to clipboard!")
+            } catch (err) {
+              console.error("Failed to copy:", err)
+            }
+          }
+        }
+        
         router.push("/")
       } else {
         const data = await response.json()
@@ -202,15 +224,19 @@ export default function Page() {
             <div className="flex items-center justify-between p-4 bg-slate-800 rounded-lg">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
-                  Public Poll
+                  {isPublic ? "Public Poll" : "Private Poll"}
                 </label>
-                <p className="text-xs text-slate-500">Anyone can view and vote on this poll</p>
+                <p className="text-xs text-slate-500">
+                  {isPublic 
+                    ? "Visible in listings and anyone can view and vote" 
+                    : "Only accessible via direct link - not shown in public listings"}
+                </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsPublic(!isPublic)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  isPublic ? "bg-blue-600" : "bg-slate-700"
+                  isPublic ? "bg-blue-600" : "bg-amber-600"
                 }`}
               >
                 <span
