@@ -26,11 +26,9 @@ export default function MyPollsPage() {
       if (Array.isArray(data)) {
         setPolls(data)
       } else {
-        console.error("API returned non-array data:", data)
         setPolls([])
       }
     } catch (error) {
-      console.error("Failed to fetch my polls:", error)
       setPolls([])
     } finally {
       setLoading(false)

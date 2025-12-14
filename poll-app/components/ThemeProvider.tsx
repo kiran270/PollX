@@ -33,7 +33,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = async () => {
     const newTheme = theme === "light" ? "dark" : "light"
-    console.log(`🎨 Toggling theme from ${theme} to ${newTheme}`)
     
     setTheme(newTheme)
     localStorage.setItem("theme", newTheme)
@@ -41,11 +40,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark")
       document.body.classList.add("dark-mode")
-      console.log("✅ Applied dark mode classes")
     } else {
       document.documentElement.classList.remove("dark")
       document.body.classList.remove("dark-mode")
-      console.log("✅ Applied light mode classes")
     }
 
     if (session?.user) {
@@ -55,9 +52,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ theme: newTheme }),
         })
-        console.log("✅ Theme saved to backend")
       } catch (error) {
-        console.error("❌ Failed to save theme preference:", error)
+        // Theme save failed, but continue with local theme change
       }
     }
   }

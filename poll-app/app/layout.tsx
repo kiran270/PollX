@@ -4,6 +4,7 @@ import SessionProvider from "@/components/SessionProvider";
 import ClientLayout from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'https://pollmitra.com'),
   title: "PollMitra - Your Voice Matters",
   description: "Create polls, vote, and engage with the community. Real-time results, beautiful themes, and mobile-friendly.",
   icons: {

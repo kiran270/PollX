@@ -46,7 +46,6 @@ export async function GET(
     // No additional access control needed - if you have the link, you can view it
     return NextResponse.json(poll)
   } catch (error) {
-    console.error("Get poll error:", error)
     return NextResponse.json({ error: "Failed to fetch poll" }, { status: 500 })
   }
 }
@@ -65,7 +64,7 @@ export async function DELETE(
 
     const { id: pollId } = await params
 
-    console.log("Delete request - pollId:", pollId, "type:", typeof pollId)
+
 
     if (!pollId || typeof pollId !== 'string') {
       return NextResponse.json({ error: "Invalid poll ID" }, { status: 400 })
@@ -112,7 +111,6 @@ export async function DELETE(
 
     return NextResponse.json({ message: "Poll deleted successfully" })
   } catch (error) {
-    console.error("Delete poll error:", error)
     return NextResponse.json({ error: "Failed to delete poll" }, { status: 500 })
   }
 }
@@ -210,7 +208,6 @@ export async function PATCH(
 
     return NextResponse.json(updatedPoll)
   } catch (error) {
-    console.error("Update poll error:", error)
     return NextResponse.json({ error: "Failed to update poll" }, { status: 500 })
   }
 }

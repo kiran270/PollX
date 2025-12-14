@@ -49,7 +49,6 @@ export async function PATCH(
 
     return NextResponse.json(updatedUser)
   } catch (error) {
-    console.error("Update user error:", error)
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
   }
 }
@@ -129,7 +128,6 @@ export async function DELETE(
 
     return NextResponse.json({ message: "User deleted successfully" })
   } catch (error) {
-    console.error("Delete user error:", error)
     return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
   }
 }
