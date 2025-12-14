@@ -74,7 +74,6 @@ export default function AnalyticsPage() {
         setLoading(false)
       })
       .catch((error) => {
-        console.error("Failed to load data:", error)
         setLoading(false)
       })
   }, [session, status, router])
@@ -88,7 +87,7 @@ export default function AnalyticsPage() {
           setUsers(usersData)
         })
         .catch((error) => {
-          console.error("Failed to load users:", error)
+          // Failed to load users
         })
     }
   }, [showUsers])
@@ -138,7 +137,6 @@ export default function AnalyticsPage() {
         alert(data.error || "Failed to update user")
       }
     } catch (error) {
-      console.error("Role change error:", error)
       alert("Failed to update user")
     }
   }
@@ -164,7 +162,6 @@ export default function AnalyticsPage() {
         alert(data.error || "Failed to delete user")
       }
     } catch (error) {
-      console.error("Delete user error:", error)
       alert("Failed to delete user")
     }
   }

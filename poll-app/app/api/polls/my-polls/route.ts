@@ -43,7 +43,6 @@ export async function GET() {
 
     return NextResponse.json(polls)
   } catch (error) {
-    console.error("Failed to fetch user polls:", error)
     return NextResponse.json({ error: "Failed to fetch polls" }, { status: 500 })
   }
 }
