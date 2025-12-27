@@ -28,7 +28,6 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
   const [hasVoted, setHasVoted] = useState(false)
   const [userVote, setUserVote] = useState<string>("")
   const [showShareMenu, setShowShareMenu] = useState(false)
-  const [showEmbedModal, setShowEmbedModal] = useState(false)
 
   useEffect(() => {
     fetchPoll()
@@ -50,7 +49,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
         setUserVote(voteData.optionId)
       }
     } catch (error) {
-      // Failed to fetch poll
+      console.error("Failed to fetch poll:", error)
     } finally {
       setLoading(false)
     }
@@ -62,7 +61,7 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
       const data = await res.json()
       setComments(data)
     } catch (error) {
-      // Failed to fetch comments
+      console.error("Failed to fetch comments:", error)
     }
   }
 
@@ -134,19 +133,8 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
       return
     }
 
-    if (platform === "embed") {
-      setShowEmbedModal(true)
-      setShowShareMenu(false)
-      return
-    }
-
     window.open(shareUrls[platform], "_blank", "width=600,height=400")
     setShowShareMenu(false)
-  }
-
-  const copyEmbedCode = (code: string) => {
-    navigator.clipboard.writeText(code)
-    alert("Embed code copied to clipboard!")
   }
 
   if (loading) {
@@ -268,20 +256,12 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
                   </svg>
                 </button>
                 {showShareMenu && (
-                  <div className="absolute right-0 mt-2 w-64 bg-slate-800 rounded-lg border border-slate-700 shadow-xl z-10">
+                  <div className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg border border-slate-700 shadow-xl z-10">
                     <button onClick={() => handleShare("twitter")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-t-lg">Twitter</button>
                     <button onClick={() => handleShare("facebook")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">Facebook</button>
                     <button onClick={() => handleShare("linkedin")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">LinkedIn</button>
                     <button onClick={() => handleShare("whatsapp")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">WhatsApp</button>
-                    <button onClick={() => handleShare("copy")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">Copy Link</button>
-                    <div className="border-t border-slate-700 mt-1 pt-1">
-                      <button onClick={() => handleShare("embed")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-b-lg flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                        Embed Code
-                      </button>
-                    </div>
+                    <button onClick={() => handleShare("copy")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-b-lg">Copy Link</button>
                   </div>
                 )}
               </div>
@@ -424,114 +404,6 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
             isOwner={poll?.userId === session?.user?.id} 
           />
         </div>
-
-        {/* Embed Modal */}
-        {showEmbedModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-slate-900 rounded-xl p-6 border border-slate-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-white">Embed This Poll</h3>
-                <button
-                  onClick={() => setShowEmbedModal(false)}
-                  className="text-slate-400 hover:text-white"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                {/* Preview */}
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-3">Preview</h4>
-                  <div className="border border-slate-700 rounded-lg overflow-hidden">
-                    <iframe
-                      src={`${window.location.origin}/embed/${id}`}
-                      width="100%"
-                      height="400"
-                      frameBorder="0"
-                      className="bg-slate-950"
-                    />
-                  </div>
-                </div>
-
-                {/* Embed Codes */}
-                <div className="space-y-4">
-                  <h4 className="text-lg font-semibold text-white">Embed Code</h4>
-                  
-                  {/* Standard Embed */}
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium text-slate-300">Standard (Responsive)</label>
-                      <button
-                        onClick={() => copyEmbedCode(`<iframe src="${window.location.origin}/embed/${id}" width="100%" height="400" frameborder="0" style="border-radius: 8px;"></iframe>`)}
-                        className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                    <textarea
-                      readOnly
-                      value={`<iframe src="${window.location.origin}/embed/${id}" width="100%" height="400" frameborder="0" style="border-radius: 8px;"></iframe>`}
-                      className="w-full p-3 bg-slate-800 border border-slate-700 rounded text-slate-300 text-sm font-mono resize-none"
-                      rows={3}
-                    />
-                  </div>
-
-                  {/* Fixed Width */}
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium text-slate-300">Fixed Width (600px)</label>
-                      <button
-                        onClick={() => copyEmbedCode(`<iframe src="${window.location.origin}/embed/${id}" width="600" height="400" frameborder="0" style="border-radius: 8px;"></iframe>`)}
-                        className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                    <textarea
-                      readOnly
-                      value={`<iframe src="${window.location.origin}/embed/${id}" width="600" height="400" frameborder="0" style="border-radius: 8px;"></iframe>`}
-                      className="w-full p-3 bg-slate-800 border border-slate-700 rounded text-slate-300 text-sm font-mono resize-none"
-                      rows={3}
-                    />
-                  </div>
-
-                  {/* WordPress Shortcode */}
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium text-slate-300">WordPress Shortcode</label>
-                      <button
-                        onClick={() => copyEmbedCode(`[iframe src="${window.location.origin}/embed/${id}" width="100%" height="400"]`)}
-                        className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                    <textarea
-                      readOnly
-                      value={`[iframe src="${window.location.origin}/embed/${id}" width="100%" height="400"]`}
-                      className="w-full p-3 bg-slate-800 border border-slate-700 rounded text-slate-300 text-sm font-mono resize-none"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-
-                {/* Instructions */}
-                <div className="bg-slate-800 rounded-lg p-4">
-                  <h5 className="font-semibold text-white mb-2">How to use:</h5>
-                  <ul className="text-sm text-slate-300 space-y-1">
-                    <li>• Copy the embed code above</li>
-                    <li>• Paste it into your website's HTML</li>
-                    <li>• The poll will appear and work on your site</li>
-                    <li>• Votes will be counted in real-time</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
     </>
