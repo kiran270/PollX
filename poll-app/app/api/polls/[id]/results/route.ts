@@ -60,6 +60,7 @@ export async function GET(
       results
     })
   } catch (error) {
+    console.error("Failed to fetch results:", error)
     return NextResponse.json({ error: "Failed to fetch results" }, { status: 500 })
   }
 }
@@ -123,8 +124,8 @@ export async function POST(
     poll.options.forEach(option => {
       option.votes.forEach(vote => {
         csvRows.push([
-          vote.user?.name || 'Anonymous',
-          vote.user?.email || 'N/A',
+          vote.user.name || 'Anonymous',
+          vote.user.email,
           option.text,
           new Date(vote.createdAt).toLocaleString()
         ])
@@ -143,6 +144,7 @@ export async function POST(
       }
     })
   } catch (error) {
+    console.error("Failed to export CSV:", error)
     return NextResponse.json({ error: "Failed to export CSV" }, { status: 500 })
   }
 }

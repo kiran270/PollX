@@ -56,6 +56,7 @@ export default function EditPollPage() {
         setLoading(false)
       })
       .catch((error) => {
+        console.error("Failed to load poll:", error)
         alert("Poll not found")
         setLoading(false)
         router.push("/")

@@ -60,7 +60,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
           }
         }
       } catch (error) {
-        // Failed to check vote status
+        console.error("Failed to check vote status:", error)
       }
     }
     checkVoteStatus()
@@ -155,18 +155,24 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
       return
     }
 
+    console.log("Deleting poll with ID:", poll.id, "type:", typeof poll.id)
+
     try {
       const response = await fetch(`/api/polls/${poll.id}`, {
         method: "DELETE",
       })
 
+      console.log("Delete response status:", response.status)
+
       if (response.ok) {
         window.location.reload()
       } else {
         const data = await response.json()
+        console.error("Delete error response:", data)
         alert(data.error || "Failed to delete poll")
       }
     } catch (error) {
+      console.error("Delete request failed:", error)
       alert("Failed to delete poll")
     }
   }
@@ -198,11 +204,13 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
     } catch (error: any) {
       // Ignore AbortError (user cancelled share dialog)
       if (error.name !== 'AbortError') {
+        console.error('Error sharing:', error)
         // Try clipboard as fallback if native share fails
         try {
           await navigator.clipboard.writeText(url)
           alert('Poll link copied to clipboard!')
         } catch (clipboardError) {
+          console.error('Failed to copy:', clipboardError)
           alert('Failed to share. Link: ' + url)
         }
       }
@@ -210,12 +218,6 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
       // Reset sharing state after a short delay
       setTimeout(() => setIsSharing(false), 1000)
     }
-  }
-
-  const handleEmbed = () => {
-    const embedCode = `<iframe src="${window.location.origin}/embed/${poll.id}" width="100%" height="400" frameborder="0" style="border-radius: 8px;"></iframe>`
-    navigator.clipboard.writeText(embedCode)
-    alert('Embed code copied to clipboard!')
   }
 
   return (
@@ -275,16 +277,6 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-            </button>
-
-            <button
-              onClick={handleEmbed}
-              className="p-1.5 text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
-              title="Get embed code"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
             </button>
 
