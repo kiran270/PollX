@@ -119,7 +119,7 @@ export default function Page() {
               await navigator.clipboard.writeText(pollUrl)
               alert("Link copied to clipboard!")
             } catch (err) {
-              // Failed to copy
+              console.error("Failed to copy:", err)
             }
           }
         }
@@ -127,6 +127,7 @@ export default function Page() {
         router.push("/")
       } else {
         const data = await response.json()
+        console.error("Error response:", data)
         alert(data.details || data.error || "Failed to create poll")
       }
     } catch (error) {

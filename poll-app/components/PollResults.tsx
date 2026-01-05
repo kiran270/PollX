@@ -32,6 +32,7 @@ export default function PollResults({ pollId, isOwner }: PollResultsProps) {
         alert(error.error || "Failed to fetch results")
       }
     } catch (error) {
+      console.error("Failed to fetch results:", error)
       alert("Failed to fetch results")
     } finally {
       setLoading(false)
@@ -41,6 +42,7 @@ export default function PollResults({ pollId, isOwner }: PollResultsProps) {
   const exportCSV = async () => {
     setExporting(true)
     try {
+      console.log('Starting CSV export for poll:', pollId)
       const res = await fetch(`/api/polls/${pollId}/results`, {
         method: 'POST',
         headers: {
@@ -48,8 +50,11 @@ export default function PollResults({ pollId, isOwner }: PollResultsProps) {
         }
       })
       
+      console.log('Response status:', res.status)
+      
       if (res.ok) {
         const blob = await res.blob()
+        console.log('Blob size:', blob.size)
         
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
@@ -69,15 +74,16 @@ export default function PollResults({ pollId, isOwner }: PollResultsProps) {
         const contentType = res.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
           const error = await res.json()
-  
+          console.error('Export error:', error)
           alert(`❌ ${error.error || "Failed to export CSV"}`)
         } else {
           const text = await res.text()
-  
+          console.error('Export error (text):', text)
           alert('❌ Failed to export CSV')
         }
       }
     } catch (error) {
+      console.error("Failed to export:", error)
       alert(`❌ Failed to export CSV: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setExporting(false)

@@ -122,6 +122,7 @@ export async function GET() {
       votesPerDay: votesPerDay.length,
     })
   } catch (error) {
+    console.error("Analytics error:", error)
     return NextResponse.json({ error: "Failed to fetch analytics" }, { status: 500 })
   }
 }

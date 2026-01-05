@@ -48,6 +48,7 @@ export async function searchGifs(query: string, apiKey?: string): Promise<any[]>
     const data = await response.json()
     return data.data || []
   } catch (error) {
+    console.error('Failed to search GIFs:', error)
     return []
   }
 }

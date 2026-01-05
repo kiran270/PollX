@@ -89,11 +89,14 @@ export async function POST(request: Request) {
   try {
     const session = await auth()
 
+    console.log("Session:", session)
+
     if (!session?.user) {
       return NextResponse.json({ error: "Please sign in to create polls" }, { status: 401 })
     }
 
     if (!session.user.id) {
+      console.error("User ID is missing from session:", session.user)
       return NextResponse.json({ error: "Invalid session. Please sign out and sign in again." }, { status: 401 })
     }
 
@@ -101,6 +104,8 @@ export async function POST(request: Request) {
 
     const body = await request.json()
     const { title, description, imageUrl, options, expiresAt, category, isPublic, allowVoteChange } = body
+
+    console.log("Creating poll with data:", { title, optionsCount: options?.length, category, userId: session.user.id })
 
     const poll = await prisma.poll.create({
       data: {
@@ -113,10 +118,14 @@ export async function POST(request: Request) {
         expiresAt: new Date(expiresAt),
         userId: session.user.id,
         options: {
-          create: options.map((opt: any) => ({
-            text: typeof opt === 'string' ? opt : opt.text,
-            imageUrl: (typeof opt === 'object' && opt.imageUrl) ? opt.imageUrl : null
-          })),
+          create: options.map((opt: any) => {
+            const optionData = {
+              text: typeof opt === 'string' ? opt : opt.text,
+              imageUrl: (typeof opt === 'object' && opt.imageUrl) ? opt.imageUrl : null
+            }
+            console.log("Creating option:", optionData.text, "hasImage:", !!optionData.imageUrl)
+            return optionData
+          }),
         },
       },
       include: {
@@ -126,6 +135,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(poll)
   } catch (error) {
+    console.error("Failed to create poll:", error)
     return NextResponse.json({ 
       error: "Failed to create poll", 
       details: error instanceof Error ? error.message : String(error) 

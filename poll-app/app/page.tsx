@@ -34,9 +34,11 @@ export default function Page() {
           setTotalPages(data.pagination.totalPages)
         }
       } else {
+        console.error("API returned non-array data:", data)
         setPolls([])
       }
     } catch (error) {
+      console.error("Failed to fetch polls:", error)
       setPolls([])
     } finally {
       setLoading(false)

@@ -60,7 +60,7 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
           }
         }
       } catch (error) {
-        // Failed to check vote status
+        console.error("Failed to check vote status:", error)
       }
     }
     checkVoteStatus()
@@ -155,18 +155,24 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
       return
     }
 
+    console.log("Deleting poll with ID:", poll.id, "type:", typeof poll.id)
+
     try {
       const response = await fetch(`/api/polls/${poll.id}`, {
         method: "DELETE",
       })
 
+      console.log("Delete response status:", response.status)
+
       if (response.ok) {
         window.location.reload()
       } else {
         const data = await response.json()
+        console.error("Delete error response:", data)
         alert(data.error || "Failed to delete poll")
       }
     } catch (error) {
+      console.error("Delete request failed:", error)
       alert("Failed to delete poll")
     }
   }
@@ -198,11 +204,13 @@ export default function PollCard({ poll: initialPoll }: { poll: Poll }) {
     } catch (error: any) {
       // Ignore AbortError (user cancelled share dialog)
       if (error.name !== 'AbortError') {
+        console.error('Error sharing:', error)
         // Try clipboard as fallback if native share fails
         try {
           await navigator.clipboard.writeText(url)
           alert('Poll link copied to clipboard!')
         } catch (clipboardError) {
+          console.error('Failed to copy:', clipboardError)
           alert('Failed to share. Link: ' + url)
         }
       }
