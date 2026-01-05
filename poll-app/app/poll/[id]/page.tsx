@@ -28,7 +28,6 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
   const [hasVoted, setHasVoted] = useState(false)
   const [userVote, setUserVote] = useState<string>("")
   const [showShareMenu, setShowShareMenu] = useState(false)
-  const [showEmbedModal, setShowEmbedModal] = useState(false)
 
   useEffect(() => {
     fetchPoll()
@@ -134,19 +133,8 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
       return
     }
 
-    if (platform === "embed") {
-      setShowEmbedModal(true)
-      setShowShareMenu(false)
-      return
-    }
-
     window.open(shareUrls[platform], "_blank", "width=600,height=400")
     setShowShareMenu(false)
-  }
-
-  const copyEmbedCode = (code: string) => {
-    navigator.clipboard.writeText(code)
-    alert("Embed code copied to clipboard!")
   }
 
   if (loading) {
@@ -268,20 +256,12 @@ export default function PollDetailPage({ params }: { params: Promise<{ id: strin
                   </svg>
                 </button>
                 {showShareMenu && (
-                  <div className="absolute right-0 mt-2 w-64 bg-slate-800 rounded-lg border border-slate-700 shadow-xl z-10">
+                  <div className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg border border-slate-700 shadow-xl z-10">
                     <button onClick={() => handleShare("twitter")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-t-lg">Twitter</button>
                     <button onClick={() => handleShare("facebook")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">Facebook</button>
                     <button onClick={() => handleShare("linkedin")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">LinkedIn</button>
                     <button onClick={() => handleShare("whatsapp")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">WhatsApp</button>
-                    <button onClick={() => handleShare("copy")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700">Copy Link</button>
-                    <div className="border-t border-slate-700 mt-1 pt-1">
-                      <button onClick={() => handleShare("embed")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-b-lg flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                        Embed Code
-                      </button>
-                    </div>
+                    <button onClick={() => handleShare("copy")} className="w-full px-4 py-2 text-left text-slate-300 hover:bg-slate-700 rounded-b-lg">Copy Link</button>
                   </div>
                 )}
               </div>

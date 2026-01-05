@@ -14,23 +14,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
     },
   },
-  async headers() {
-    return [
-      {
-        source: '/embed/:path*',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https: http: data: blob:;",
-          },
-        ],
-      },
-    ]
-  },
 };
 
 export default nextConfig;
