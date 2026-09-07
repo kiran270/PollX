@@ -1,178 +1,162 @@
-# Chit Fund Manager
+# PollApp - Real-time Polling Application
 
-A complete chit fund management system built with Flask backend and Next.js frontend, using SQLite database.
+A modern polling application built with Next.js 15, featuring Google authentication, real-time countdown timers, and admin controls.
 
 ## Features
 
-### Admin Features
-- **Group Management**: Create and manage chit groups with customizable terms
-- **Member Management**: Add and manage group members
-- **Payment Tracking**: Monitor member payments and installments
-- **Dashboard Analytics**: Overview of all groups and their status
-- **Financial Reports**: Track group finances and member contributions
+### Core Features
+- 🔐 Google OAuth authentication
+- 👤 Role-based access (Admin/User)
+- 📊 Real-time poll results with percentages
+- ⏱️ Live countdown timers for poll expiration
+- 🗳️ One vote per user per poll
+- 📱 Responsive design with Tailwind CSS
+- 💾 SQLite database with Prisma ORM
 
-### Member Features
-- **Personal Dashboard**: View all joined chit groups
-- **Group Discovery**: Browse available chit groups
-- **Payment History**: Track your payment records and status
-- **Group Details**: Monitor group progress and member information
+### New Features ✨
+- 🏷️ **Poll Categories** - Organize polls by Politics, Sports, Entertainment, Technology, etc.
+- 🔍 **Search & Filter** - Find polls quickly with search and category filters
+- 🔄 **Vote Changes** - Allow users to change their vote (admin configurable)
+- 🔒 **Public/Private Polls** - Control poll visibility
+- 🌓 **Dark/Light Mode** - Full theme support with user preferences
+- 💬 **Comments & Discussion** - Engage with community through comments
+- 🔗 **Social Sharing** - Share polls on Twitter, Facebook, LinkedIn, WhatsApp
 
-## Tech Stack
+## Setup Instructions
 
-### Backend
-- **Flask**: Python web framework
-- **SQLite**: Lightweight database with `chitfund.db` file
-- **JWT**: Token-based authentication
-- **bcrypt**: Password hashing
-- **CORS**: Cross-origin resource sharing
+### 1. Install Dependencies
 
-### Frontend
-- **Next.js 14**: React framework with App Router
-- **TypeScript**: Type-safe JavaScript
-- **Tailwind CSS**: Utility-first CSS framework
-- **Axios**: HTTP client for API calls
-
-## Database Schema
-
-### Tables
-1. **users**: User accounts (admin/member roles)
-2. **chitgroups**: Chit fund group details
-3. **groupmembers**: Junction table linking users to groups
-
-
-## Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js 18+
-- npm or yarn
-
-### Backend Setup
-
-1. Navigate to backend directory:
 ```bash
-cd backend
-```
-
-2. Create virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Run the Flask server:
-```bash
-python app.py
-```
-
-The backend will run on `http://localhost:5000`
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
+cd poll-app
 npm install
 ```
 
-3. Run the development server:
+### 2. Configure Google OAuth
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable Google+ API
+4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
+5. Configure OAuth consent screen
+6. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+7. Copy the Client ID and Client Secret
+
+### 3. Environment Variables
+
+Update the `.env.local` file with your credentials:
+
+```env
+DATABASE_URL="file:./dev.db"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key-change-this-in-production"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
+
+Generate a secure NEXTAUTH_SECRET:
+```bash
+openssl rand -base64 32
+```
+
+### 4. Database Setup
+
+The database is already initialized, but if you need to reset it:
+
+```bash
+npx prisma db push
+npx prisma generate
+```
+
+### 5. Create Admin User
+
+After signing in for the first time, you need to manually set your user as admin:
+
+```bash
+npx prisma studio
+```
+
+This opens Prisma Studio in your browser. Find your user and change the `role` field from `"user"` to `"admin"`.
+
+### 6. Run the Application
+
 ```bash
 npm run dev
 ```
 
-The frontend will run on `http://localhost:3000`
+Visit `http://localhost:3000`
 
 ## Usage
 
-### Getting Started
-1. Open `http://localhost:3000` in your browser
-2. Register as either an Admin or Member
-3. Login with your credentials
+### For Users:
+1. Sign in with Google
+2. **Browse & Search**: Use search bar and category filters to find polls
+3. **Vote**: Select an option and submit your vote
+4. **Change Vote**: If enabled by admin, change your vote before poll expires
+5. **Comment**: Click on polls to view details and join discussions
+6. **Share**: Share interesting polls on social media
+7. **Theme**: Toggle between dark and light mode in sidebar
 
-### For Admins
-1. Create chit groups from the admin dashboard
-2. Set group parameters (value, members, duration, commission)
-3. Add members to groups and manage their participation
-4. Track member participation and payments
+### For Admins:
+1. Sign in with Google (ensure your role is set to "admin")
+2. Click "Create Poll" in the navbar
+3. Fill in poll details:
+   - Title (required)
+   - Description (optional)
+   - Category (optional) - Choose from predefined categories
+   - At least 2 options
+   - Expiration time in hours
+   - **Public/Private** - Toggle poll visibility
+   - **Allow Vote Changes** - Let users change their votes
+4. Submit to create the poll
+5. Edit or delete polls from the poll cards
 
-### For Members
-1. Browse available chit groups
-2. Join groups by selecting available ticket numbers
-3. View your dashboard to track all participations
-4. Monitor payment schedules and group progress
+## Tech Stack
 
-## API Endpoints
+- **Framework**: Next.js 15 (App Router)
+- **Authentication**: NextAuth.js v5
+- **Database**: SQLite with Prisma ORM
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
+## Database Schema
 
-### Chit Groups
-- `GET /api/chitgroups` - Get all chit groups
-- `POST /api/chitgroups` - Create new chit group (admin only)
-- `GET /api/chitgroups/{id}/members` - Get group members
-- `POST /api/chitgroups/{id}/join` - Join a group
-
-
-
-### Member Dashboard
-- `GET /api/member/dashboard` - Get member's groups and data
-
-## Database File
-
-The SQLite database file `chitfund.db` will be automatically created in the backend directory when you first run the Flask application. The database includes:
-
-- Proper foreign key relationships
-- Unique constraints for data integrity
-- Automatic timestamp tracking
-- Role-based access control
-
-## Key Concepts
-
-### Chit Fund Basics
-- **Chit Value**: Total amount of the chit fund
-- **Installment**: Monthly payment by each member
-- **Payment Schedule**: Monthly installment tracking for each member
-- **Group Status**: Current state of the chit fund (Pending, Active, Completed)
-
-### Calculation Example
-- Chit Value: ₹2,00,000
-- Members: 20
-- Monthly Installment: ₹10,000 per member
-- Total Monthly Collection: ₹2,00,000
-- Duration: 20 months
-
-## Development
-
-### Adding New Features
-1. Backend: Add routes in `app.py` and update database schema if needed
-2. Frontend: Create new pages in `app/` directory and API calls in `lib/api.ts`
-
-### Database Migrations
-Since we're using SQLite with manual schema creation, any schema changes should be made in the `init_db()` function in `app.py`.
+- **User**: Stores user information and role
+- **Poll**: Contains poll details and expiration time
+- **Option**: Poll options
+- **Vote**: Tracks user votes (unique constraint on userId + pollId)
 
 ## Security Features
-- Password hashing with bcrypt
-- JWT token authentication
-- Role-based access control
-- Input validation and sanitization
-- CORS configuration for secure cross-origin requests
 
-## Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- Google OAuth authentication
+- Role-based access control
+- One vote per user per poll (database constraint)
+- Expired poll validation
+- Protected API routes
+
+## Project Structure
+
+```
+poll-app/
+├── app/
+│   ├── api/
+│   │   ├── auth/[...nextauth]/
+│   │   └── polls/
+│   ├── admin/
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── Navbar.tsx
+│   ├── PollCard.tsx
+│   └── SessionProvider.tsx
+├── lib/
+│   └── prisma.ts
+├── prisma/
+│   └── schema.prisma
+├── types/
+│   └── next-auth.d.ts
+└── auth.ts
+```
 
 ## License
-MIT License - see LICENSE file for details.
+
+MIT
